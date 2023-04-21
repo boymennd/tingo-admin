@@ -29,6 +29,7 @@ import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import enLocale from '../assets/images/enLocale.png';
 import zhLocale from '../assets/images/zhLocale.png';
+import menu from '../assets/images/menu.png';
 import TLoadingUI from '../components/common/TLoading/TLoadingUI';
 import { User } from '../models/userInterface';
 import { AuthenticationService } from '../services/access/authenticationService';
@@ -130,7 +131,7 @@ export default function Layout({ children }: Props) {
 	const classes = useStyles();
 	const { t } = useTranslation(['common']);
 	const theme = useTheme();
-	const [open, setOpen] = useState(false);
+	const [open, setOpen] = useState(true);
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 	const [anchorElLocale, setAnchorElLocale] = useState<null | HTMLElement>(
 		null

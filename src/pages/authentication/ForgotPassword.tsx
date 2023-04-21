@@ -1,12 +1,11 @@
-import * as React from 'react';
-import { useStyles } from '../../layouts/styles/makeTheme';
+import { Error } from '@mui/icons-material';
 import { Box, Button, Grid, TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
-import { NavLink } from 'react-router-dom';
-import logo from '../../assets/images/logo.png';
-import bg_login from '../../assets/images/bg_login.png';
 import { useTranslation } from 'react-i18next';
-import { Error } from '@mui/icons-material';
+import { NavLink } from 'react-router-dom';
+import bg_login from '../../assets/images/bg_login.png';
+import logo from '../../assets/images/logo.png';
+import { useStyles } from '../../layouts/styles/makeTheme';
 
 export default function ForgotPassword(this: any) {
 	const classes = useStyles();

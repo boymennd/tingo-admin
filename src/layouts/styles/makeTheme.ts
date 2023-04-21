@@ -3,15 +3,42 @@ import sidebarBG from '../../assets/images/sidebar/sidebar-bg-dark.jpg';
 
 const useStyles = makeStyles({
 	MSideBarContainer: {
+		width: '216px !important',
 		'& .css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
-			backgroundImage: `linear-gradient(to bottom, rgba(34,42,69, 0.96), rgba(34,42,69, 0.96)),url(${sidebarBG})`,
-			color: '#ffffff',
+			color: 'var(--parimary-color)',
+			fontWeight: '700',
+			width: '216px !important',
 		},
 		'& .MuiListItemIcon-root': {
-			color: '#ffffff',
+			color: 'var(--parimary-color)',
+			marginRight: '16px',
 		},
 		'& .MuiButtonBase-root': {
-			color: '#ffffff',
+			color: 'var(--parimary-color)',
+			padding: '16px 24px',
+			borderRadius: '0px 8px 8px 0px',
+			width: '200px',
+		},
+		'& .MuiTypography-root': {
+			textTransform: 'capitalize',
+			fontSize: '14px',
+			fontWeight: 600,
+		},
+		'& .css-1m5i5w0-MuiButtonBase-root-MuiListItemButton-root.Mui-selected': {
+			position: 'relative',
+			backgroundColor: 'var(--menu-selected-bg-color)',
+			'&:before': {
+				content: '""',
+				position: 'absolute',
+				left: 0,
+				display: 'block',
+				width: '4px',
+				height: '56px',
+				background: 'var(--bg-gradient-color)',
+			},
+		},
+		'& .css-1ic4du8-MuiListItemText-root': {
+			margin: 0,
 		},
 	},
 	MTopBarContainer: {
@@ -103,10 +130,10 @@ const useStyles = makeStyles({
 		borderRadius: '60px',
 		padding: '18px 24px',
 		textTransform: 'none',
-		backgroundColor: '#000',
+		backgroundColor: 'var(--primary-color)',
 		fontWeight: '700',
 		'&:hover': {
-			backgroundColor: '#000',
+			backgroundColor: 'var(--primary-color)',
 		},
 	},
 	MTextValidate: {

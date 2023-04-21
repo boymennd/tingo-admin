@@ -1,21 +1,12 @@
 import { Error } from '@mui/icons-material';
-import {
-	Box,
-	Button,
-	FormControl,
-	Grid,
-	MenuItem,
-	Select,
-	TextField,
-	Typography,
-} from '@mui/material';
+import { Box, Button, Grid, TextField, Typography } from '@mui/material';
 import i18n from 'i18next';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
-import enLocale from '../../assets/images/enLocale.png';
 import bg_login from '../../assets/images/bg_login.png';
+import enLocale from '../../assets/images/enLocale.png';
 import logo from '../../assets/images/logo.png';
 import zhLocale from '../../assets/images/zhLocale.png';
 import { useStyles } from '../../layouts/styles/makeTheme';
@@ -190,7 +181,11 @@ export default function Login() {
 								>
 									<Typography
 										fontSize={'small'}
-										sx={{ color: '#000', fontSize: '16px', fontWeight: '700' }}
+										sx={{
+											color: 'var(--primary-color)',
+											fontSize: '16px',
+											fontWeight: '700',
+										}}
 									>
 										{t('forgotPassword')}
 									</Typography>
