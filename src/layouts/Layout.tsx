@@ -1,22 +1,3 @@
-import React, { Suspense } from 'react';
-import { styled, useTheme, Theme, CSSObject } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import MuiDrawer from '@mui/material/Drawer';
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import { useStyles } from './styles/makeTheme';
-import { Avatar, Menu, MenuItem } from '@mui/material';
 import {
 	Dashboard,
 	Equalizer,
@@ -25,19 +6,37 @@ import {
 	Person,
 	Settings,
 } from '@mui/icons-material';
-import { AuthenticationService } from '../services/access/authenticationService';
-import { objectNullOrEmpty, userRole, viewPermission } from '../utils/utils';
-import { User } from '../models/userInterface';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Avatar, Menu, MenuItem } from '@mui/material';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Divider from '@mui/material/Divider';
+import MuiDrawer from '@mui/material/Drawer';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import { CSSObject, styled, Theme, useTheme } from '@mui/material/styles';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import i18n from 'i18next';
+import React, { Suspense, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useLocation, useNavigate } from 'react-router-dom';
 import enLocale from '../assets/images/enLocale.png';
 import zhLocale from '../assets/images/zhLocale.png';
-import { useLocation, useNavigate } from 'react-router-dom';
-import ContainerRouter from '../routes/ContainerRouter';
-import { privateRoutes } from '../routes/routes';
-import { useAppDispatch } from '../store/store';
+import TLoadingUI from '../components/common/TLoading/TLoadingUI';
+import { User } from '../models/userInterface';
+import { AuthenticationService } from '../services/access/authenticationService';
 import { openLoading } from '../store/slices/loadingSlice';
+import { setUserInfo } from '../store/slices/userInfoSlice';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { objectNullOrEmpty, userRole, viewPermission } from '../utils/utils';
+import { useStyles } from './styles/makeTheme';
 
 const drawerWidth = 240;
 
@@ -123,16 +122,19 @@ const lstLocale = [
 	},
 ];
 
-export default function Layout() {
+interface Props {
+	children?: any;
+}
+
+export default function Layout({ children }: Props) {
 	const classes = useStyles();
 	const { t } = useTranslation(['common']);
 	const theme = useTheme();
-	const [open, setOpen] = React.useState(false);
-	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+	const [open, setOpen] = useState(false);
+	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+	const [anchorElLocale, setAnchorElLocale] = useState<null | HTMLElement>(
 		null
 	);
-	const [anchorElLocale, setAnchorElLocale] =
-		React.useState<null | HTMLElement>(null);
 	const openUserMenu = Boolean(anchorElUser);
 	const openLocaleMenu = Boolean(anchorElLocale);
 	const [currentLocate, setCurrentLocate] = useState<any>({});
@@ -183,9 +185,9 @@ export default function Layout() {
 	const handleLogout = async () => {
 		setAnchorElUser(null);
 		dispatch(openLoading(true));
+		dispatch(setUserInfo({ isLogin: false }));
 		await delay(500);
 		AuthenticationService.logout();
-		// window.location.href = '/';
 		navigate('/login', { replace: true });
 		dispatch(openLoading(false));
 	};
@@ -385,9 +387,7 @@ export default function Layout() {
 			</Drawer>
 			<Box component='main' sx={{ flexGrow: 1, p: 3 }}>
 				<DrawerHeader />
-				<Suspense fallback='...'>
-					<ContainerRouter children={privateRoutes} isPrivate />
-				</Suspense>
+				<Suspense fallback={<TLoadingUI />}>{children}</Suspense>
 			</Box>
 		</Box>
 	);
