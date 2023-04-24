@@ -99,6 +99,7 @@ const useStyles = makeStyles({
 	},
 	MLoginInput: {
 		marginBottom: '20px',
+		padding: 0,
 	},
 	MTextField: {
 		'& .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root': {
