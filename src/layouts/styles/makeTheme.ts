@@ -1,13 +1,13 @@
 import { makeStyles } from '@mui/styles';
-import sidebarBG from '../../assets/images/sidebar/sidebar-bg-dark.jpg';
 
 const useStyles = makeStyles({
 	MSideBarContainer: {
-		width: '216px !important',
+		// width: 'inherit !important',
 		'& .css-12i7wg6-MuiPaper-root-MuiDrawer-paper': {
 			color: 'var(--parimary-color)',
-			fontWeight: '700',
-			width: '216px !important',
+			fontWeight: 700,
+			marginTop: '72px',
+			width: 'inherit !important',
 		},
 		'& .MuiListItemIcon-root': {
 			color: 'var(--parimary-color)',
@@ -19,24 +19,25 @@ const useStyles = makeStyles({
 			borderRadius: '0px 8px 8px 0px',
 			width: '200px',
 		},
-		'& .MuiTypography-root': {
+		'& .MuiTypography-root, .MuiListItemButton-root': {
 			textTransform: 'capitalize',
 			fontSize: '14px',
 			fontWeight: 600,
 		},
-		'& .css-1m5i5w0-MuiButtonBase-root-MuiListItemButton-root.Mui-selected': {
-			position: 'relative',
-			backgroundColor: 'var(--menu-selected-bg-color)',
-			'&:before': {
-				content: '""',
-				position: 'absolute',
-				left: 0,
-				display: 'block',
-				width: '4px',
-				height: '56px',
-				background: 'var(--bg-gradient-color)',
+		'& .css-oqgtw4-MuiButtonBase-root-MuiListItemButton-root.Mui-selected,.css-19c054k-MuiButtonBase-root-MuiListItemButton-root.Mui-selected':
+			{
+				position: 'relative',
+				backgroundColor: 'var(--menu-selected-bg-color)',
+				'&:before': {
+					content: '""',
+					position: 'absolute',
+					left: 0,
+					display: 'block',
+					width: '4px',
+					height: '56px',
+					background: 'var(--bg-gradient-color)',
+				},
 			},
-		},
 		'& .css-1ic4du8-MuiListItemText-root': {
 			margin: 0,
 		},
@@ -45,6 +46,7 @@ const useStyles = makeStyles({
 		background: '#ffffff',
 		color: '#34314c',
 		position: 'relative',
+		height: '72px',
 	},
 	MTopBarUser: {
 		position: 'absolute',

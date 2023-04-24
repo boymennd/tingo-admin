@@ -6,10 +6,7 @@ import {
 	Person,
 	Settings,
 } from '@mui/icons-material';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import MenuIcon from '@mui/icons-material/Menu';
-import { Avatar, Menu, MenuItem } from '@mui/material';
+import { Avatar, Grid, Menu, MenuItem } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -28,14 +25,16 @@ import React, { Suspense, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import enLocale from '../assets/images/enLocale.png';
-import zhLocale from '../assets/images/zhLocale.png';
+import logo from '../assets/images/logo.png';
 import menu from '../assets/images/menu.png';
+import menuCollapse from '../assets/images/menuCollapse.png';
+import zhLocale from '../assets/images/zhLocale.png';
 import TLoadingUI from '../components/common/TLoading/TLoadingUI';
 import { User } from '../models/userInterface';
 import { AuthenticationService } from '../services/access/authenticationService';
 import { openLoading } from '../store/slices/loadingSlice';
 import { setUserInfo } from '../store/slices/userInfoSlice';
-import { useAppDispatch, useAppSelector } from '../store/store';
+import { useAppDispatch } from '../store/store';
 import { objectNullOrEmpty, userRole, viewPermission } from '../utils/utils';
 import { useStyles } from './styles/makeTheme';
 
@@ -157,12 +156,8 @@ export default function Layout({ children }: Props) {
 		}
 	}, [i18n.language]);
 
-	const handleDrawerOpen = () => {
-		setOpen(true);
-	};
-
-	const handleDrawerClose = () => {
-		setOpen(false);
+	const handleDrawerChange = () => {
+		setOpen(!open);
 	};
 
 	const handleUserMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -218,6 +213,7 @@ export default function Layout({ children }: Props) {
 			<ListItemButton
 				sx={{
 					minHeight: 48,
+					height: 56,
 					justifyContent: open ? 'initial' : 'center',
 					px: 2.5,
 				}}
@@ -241,23 +237,20 @@ export default function Layout({ children }: Props) {
 	return (
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
-			<AppBar position='fixed' open={open}>
+			<AppBar position='fixed'>
 				<Toolbar className={classes.MTopBarContainer}>
 					<IconButton
 						color='inherit'
 						aria-label='open drawer'
-						onClick={handleDrawerOpen}
+						onClick={handleDrawerChange}
 						edge='start'
 						sx={{
-							marginRight: 5,
-							...(open && { display: 'none' }),
+							marginRight: 3,
 						}}
 					>
-						<MenuIcon />
+						<img src={!open ? menu : menuCollapse} alt={menu} />
 					</IconButton>
-					<Typography variant='h5' noWrap component='div'>
-						{'TINGO'}
-					</Typography>
+					<img src={logo} alt='' style={{ height: 42 }} />
 					<div className={classes.MTopBarUser}>
 						<IconButton
 							onClick={handleLocaleMenuOpen}
@@ -355,41 +348,33 @@ export default function Layout({ children }: Props) {
 					</div>
 				</Toolbar>
 			</AppBar>
-			<Drawer
-				variant='permanent'
-				open={open}
-				className={classes.MSideBarContainer}
-			>
-				<DrawerHeader>
-					<IconButton onClick={handleDrawerClose}>
-						{theme.direction === 'rtl' ? (
-							<ChevronRightIcon />
+			<Grid sx={{ marginTop: '72px', display: 'flex' }}>
+				<Drawer
+					variant='permanent'
+					open={open}
+					className={classes.MSideBarContainer}
+					sx={{ width: open ? 216 : '72px !important' }}
+				>
+					<List sx={{ padding: '24px 0' }}>
+						{SidebarItem(t('dashboard'), '/', <Dashboard />)}
+						{SidebarItem(t('profile'), '/profile', <Person />)}
+						{!userRole() ? (
+							SidebarItem(t('userManagement'), '/user-management', <Group />)
 						) : (
-							<ChevronLeftIcon />
+							<></>
 						)}
-					</IconButton>
-				</DrawerHeader>
-				<Divider />
-				<List>{SidebarItem(t('dashboard'), '/', <Dashboard />)}</List>
-				<Divider />
-				<List>
-					{SidebarItem(t('profile'), '/profile', <Person />)}
-					{!userRole() ? (
-						SidebarItem(t('userManagement'), '/user-management', <Group />)
-					) : (
-						<></>
-					)}
-					{viewPermission() ? (
-						SidebarItem(t('formExample'), '/form-example', <Equalizer />)
-					) : (
-						<></>
-					)}
-				</List>
-			</Drawer>
-			<Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-				<DrawerHeader />
-				<Suspense fallback={<TLoadingUI />}>{children}</Suspense>
-			</Box>
+						{viewPermission() ? (
+							SidebarItem(t('formExample'), '/form-example', <Equalizer />)
+						) : (
+							<></>
+						)}
+					</List>
+				</Drawer>
+				<Box component='main' sx={{ flexGrow: 1, p: 3 }}>
+					<DrawerHeader />
+					<Suspense fallback={<TLoadingUI />}>{children}</Suspense>
+				</Box>
+			</Grid>
 		</Box>
 	);
 }
