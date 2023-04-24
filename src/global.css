@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+	--primary-color: #000;
+	--bg-gradient-color: linear-gradient(313.09deg, #f05822 0%, #fbb421 103.33%);
+	--tingo-color: #F8A700,
+	--tingo-bg-color: #fff5db;
+	--menu-selected-bg-color: rgba(247, 139, 41, 0.1);
+	--status-reject-color: #f05822;
+	--status-reject-bg-color: rgba(247, 139, 41, 0.1);
+	--status-approve-color: #2e7d32;
+	--status-approve-bg-color: #e8f5e9;
+	--primary-border: 1px solid #d2d2d2;
+}
+
+* {
+	font-family: 'Inter', sans-serif;
+}
