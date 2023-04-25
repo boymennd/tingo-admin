@@ -8,6 +8,7 @@ const useStyles = makeStyles({
 			fontWeight: 700,
 			marginTop: '72px',
 			width: 'inherit !important',
+			transition: 'width linear !important',
 		},
 		'& .MuiListItemIcon-root': {
 			color: 'var(--parimary-color)',

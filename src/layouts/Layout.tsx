@@ -34,7 +34,7 @@ import { User } from '../models/userInterface';
 import { AuthenticationService } from '../services/access/authenticationService';
 import { openLoading } from '../store/slices/loadingSlice';
 import { setUserInfo } from '../store/slices/userInfoSlice';
-import { useAppDispatch } from '../store/store';
+import { useAppDispatch, useAppSelector } from '../store/store';
 import { objectNullOrEmpty, userRole, viewPermission } from '../utils/utils';
 import { useStyles } from './styles/makeTheme';
 
@@ -127,6 +127,7 @@ interface Props {
 }
 
 export default function Layout({ children }: Props) {
+	const userInfo = useAppSelector((state) => state.userInfo.userInfo);
 	const classes = useStyles();
 	const { t } = useTranslation(['common']);
 	const theme = useTheme();
@@ -304,7 +305,22 @@ export default function Layout({ children }: Props) {
 							aria-haspopup='true'
 							aria-expanded={openUserMenu ? 'true' : undefined}
 						>
-							<Avatar alt='' src={''} />
+							<div
+								style={{
+									width: 48,
+									height: 48,
+									display: 'flex',
+									justifyContent: 'center',
+									alignItems: 'center',
+									color: '#F8A700',
+									fontWeight: 700,
+									backgroundColor: '#FFF5DB',
+									textTransform: 'uppercase',
+									borderRadius: 48,
+								}}
+							>
+								{userInfo?.username?.slice(0, 2) || ''}
+							</div>
 						</IconButton>
 						<Menu
 							anchorEl={anchorElUser}
