@@ -1,0 +1,126 @@
+import { makeStyles } from '@mui/styles';
+
+const userProfileStyles = makeStyles({
+  userProfile: {
+    '& .css-19kzrtu': {
+      padding: '60px 0',
+      marginBottom: '64px',
+      background: 'rgba(0, 0, 0, 0.02)',
+    },
+  },
+  TabTitle: {
+    '& .css-1h9z7r5-MuiButtonBase-root-MuiTab-root': {
+      height: '40px',
+      minHeight: '40px',
+      color: 'rgba(0, 0, 0, 0.5)',
+      fontWeight: 600,
+      fontSize: '14px',
+      lineHeight: '24px',
+      letterSpacing: '-0.408px',
+      textTransform: 'capitalize',
+      padding: '8px',
+      '&.Mui-selected': {
+        color: 'var(--primary-color)',
+      },
+    },
+    '& .css-1aquho2-MuiTabs-indicator': {
+      background: 'var(--bg-gradient-color)',
+    },
+    '& .css-1ujnqem-MuiTabs-root, .css-101h9z7r5-MuiButtonBase-root-MuiTab-root':
+      {
+        minHeight: '40px',
+      },
+  },
+  PersonnalInformation: {
+    position: 'relative',
+    maxWidth: '776px',
+    margin: '0 auto',
+    border: 'var(--primary-border)',
+    padding: '36px 24px 24px 24px',
+    borderRadius: '16px',
+    background: '#fff',
+  },
+  Avatar: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '16px',
+    alignItems: 'center',
+    color: 'var(--primary-color)',
+    fontWeight: '700',
+    fontSize: '20px',
+    lineHeight: '24px',
+    letterSpacing: '-0.408px',
+    textTransform: 'capitalize',
+  },
+  infoBoxContainer: {
+    marginTop: '24px',
+  },
+  infoTitle: {
+    color: 'var(--primary-color)',
+    marginBottom: '8px',
+    fontWeight: '600',
+    fontSize: '16px',
+    lineHeight: '24px',
+    letterSpacing: '-0.408px',
+    textTransform: 'capitalize',
+  },
+  infoBox: {
+    border: 'var(--primary-border)',
+    padding: '16px',
+    borderRadius: '16px',
+    background: 'rgba(0, 0, 0, 0.02)',
+    fontWeight: '500',
+    fontSize: '16px',
+    lineHeight: '24px',
+    letterSpacing: '-0.408px',
+    textTransform: 'capitalize',
+    color: 'rgba(0, 0, 0, 0.6)',
+  },
+  infoItem: {
+    height: '48px',
+    lineHeight: '48px',
+    borderBottom: 'var(--primary-border)',
+    '&:last-child': {
+      borderBottom: 'none',
+    },
+  },
+  actionBar: {
+    width: 'calc(100% - var(--sidebar-width))',
+    height: '64px',
+    position: 'fixed',
+    bottom: 0,
+    right: 0,
+    borderTop: 'var(--primary-border)',
+    background: '#fff',
+    zIndex: 2,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  delete: {
+    border: '1px solid var(--delete-color)',
+    padding: '8px 16px',
+    color: 'var(--delete-color)',
+    fontSize: '16px',
+    lineHeight: '24px',
+    fontWeight: 600,
+    borderRadius: '24px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '13px',
+  },
+  edit: {
+    border: '1px solid #F8A700',
+    padding: '8px 16px',
+    color: '#F8A700',
+    fontSize: '16px',
+    lineHeight: '24px',
+    fontWeight: 600,
+    borderRadius: '24px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '13px',
+  },
+});
+
+export { userProfileStyles };

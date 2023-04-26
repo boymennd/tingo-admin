@@ -8,6 +8,7 @@ const useStyles = makeStyles({
 			fontWeight: 700,
 			marginTop: '72px',
 			width: 'inherit !important',
+			transition: 'width linear !important',
 		},
 		'& .MuiListItemIcon-root': {
 			color: 'var(--parimary-color)',
@@ -41,6 +42,10 @@ const useStyles = makeStyles({
 		'& .css-1ic4du8-MuiListItemText-root': {
 			margin: 0,
 		},
+	},
+	MTopBar: {
+		borderBottom: 'var(--primary-border)',
+		boxShadow: 'none !important',
 	},
 	MTopBarContainer: {
 		background: '#ffffff',

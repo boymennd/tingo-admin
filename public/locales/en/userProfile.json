@@ -1,0 +1,25 @@
+{
+	"delete": "Delete",
+	"edit": "Edit",
+	"unapprove": "Unapprove",
+	"approve": "Approve",
+
+	"personalInformation": "Personal Information",
+	"accountId": "Account ID",
+	"dateOfBirth": "Date of Birth",
+	"gender": "Gender",
+	"registerDate": "Register Date",
+	"lateDate": "Late Date",
+	"approvedDate": "Approved Date",
+	"phoneNumber": "Phone Number",
+	"email": "Email",
+	"postalCode": "Postal Code",
+	"residentAddress": "Residential Address",
+	"billAddress": "Bill Address",
+	"paymentInformation": "Payment Information",
+	"typeOfCard": "Type Of Card",
+	"cardNumber": "Card Number",
+	"documentIdenfication": "Document Identification",
+	"selfilePhoto": "Selfile Photo",
+	"addressProof": "Address Proof"
+}
