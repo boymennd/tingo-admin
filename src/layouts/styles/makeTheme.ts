@@ -43,6 +43,10 @@ const useStyles = makeStyles({
 			margin: 0,
 		},
 	},
+	MTopBar: {
+		borderBottom: 'var(--primary-border)',
+		boxShadow: 'none !important',
+	},
 	MTopBarContainer: {
 		background: '#ffffff',
 		color: '#34314c',

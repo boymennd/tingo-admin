@@ -27,6 +27,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import enLocale from '../assets/images/enLocale.png';
 import logo from '../assets/images/logo.png';
 import menu from '../assets/images/menu.png';
+import user from '../assets/images/user.png';
 import menuCollapse from '../assets/images/menuCollapse.png';
 import zhLocale from '../assets/images/zhLocale.png';
 import TLoadingUI from '../components/common/TLoading/TLoadingUI';
@@ -36,9 +37,22 @@ import { openLoading } from '../store/slices/loadingSlice';
 import { setUserInfo } from '../store/slices/userInfoSlice';
 import { useAppDispatch, useAppSelector } from '../store/store';
 import { objectNullOrEmpty, userRole, viewPermission } from '../utils/utils';
+import Breadcrumb from './Breadcrumb';
 import { useStyles } from './styles/makeTheme';
 
-const drawerWidth = 240;
+const menuItems = [
+	{
+		route: '/user-profile',
+		name: 'userProfile',
+		icon: <img src={user} alt='' />,
+	},
+	{ route: '/', name: 'dashboard', icon: <Dashboard /> },
+	{ route: '/profile', name: 'profile', icon: <Person /> },
+	{ route: '/user-management', name: 'userManagement', icon: <Group /> },
+	{ route: '/form-example', name: 'example', icon: <Equalizer /> },
+];
+
+const drawerWidth = 216;
 
 const openedMixin = (theme: Theme): CSSObject => ({
 	width: drawerWidth,
@@ -238,7 +252,7 @@ export default function Layout({ children }: Props) {
 	return (
 		<Box sx={{ display: 'flex' }}>
 			<CssBaseline />
-			<AppBar position='fixed'>
+			<AppBar position='fixed' className={classes.MTopBar}>
 				<Toolbar className={classes.MTopBarContainer}>
 					<IconButton
 						color='inherit'
@@ -364,15 +378,17 @@ export default function Layout({ children }: Props) {
 					</div>
 				</Toolbar>
 			</AppBar>
-			<Grid sx={{ marginTop: '72px', display: 'flex' }}>
+			<Grid sx={{ marginTop: '72px', display: 'flex', width: '100%' }}>
 				<Drawer
 					variant='permanent'
 					open={open}
 					className={classes.MSideBarContainer}
-					sx={{ width: open ? 216 : '72px !important' }}
 				>
 					<List sx={{ padding: '24px 0' }}>
-						{SidebarItem(t('dashboard'), '/', <Dashboard />)}
+						{menuItems?.map((menuItem) =>
+							SidebarItem(t(menuItem.name), menuItem.route, menuItem.icon)
+						)}
+						{/* {SidebarItem(t('dashboard'), '/', <Dashboard />)}
 						{SidebarItem(t('profile'), '/profile', <Person />)}
 						{!userRole() ? (
 							SidebarItem(t('userManagement'), '/user-management', <Group />)
@@ -383,12 +399,14 @@ export default function Layout({ children }: Props) {
 							SidebarItem(t('formExample'), '/form-example', <Equalizer />)
 						) : (
 							<></>
-						)}
+						)} */}
 					</List>
 				</Drawer>
 				<Box component='main' sx={{ flexGrow: 1, p: 3 }}>
-					<DrawerHeader />
-					<Suspense fallback={<TLoadingUI />}>{children}</Suspense>
+					<Suspense fallback={<TLoadingUI />}>
+						<Breadcrumb />
+						{children}
+					</Suspense>
 				</Box>
 			</Grid>
 		</Box>
