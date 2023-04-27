@@ -87,7 +87,6 @@ const userProfileStyles = makeStyles({
     },
   },
   actionBar: {
-    width: 'calc(100% - var(--sidebar-width))',
     height: '64px',
     position: 'fixed',
     bottom: 0,
@@ -99,6 +98,7 @@ const userProfileStyles = makeStyles({
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '10px 16px',
+    transition: 'width linear 180ms',
   },
   groupAction: {
     display: 'flex',
