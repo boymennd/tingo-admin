@@ -9,11 +9,17 @@ const ActionBar = () => {
   const { t } = useTranslation(['userProfile']);
   return (
     <div className={classes.actionBar}>
-      <div className={classes.delete}>
-        <img src={deleteIcon} alt="Delete" /> {t('delete')}
+      <div className={classes.groupAction}>
+        <div className={classes.delete}>
+          <img src={deleteIcon} alt="Delete" /> {t('delete')}
+        </div>
+        <div className={classes.edit}>
+          <img src={editIcon} alt="Edit" /> {t('edit')}
+        </div>
       </div>
-      <div className={classes.edit}>
-        <img src={editIcon} alt="Edit" /> {t('edit')}
+      <div className={classes.groupAction}>
+        <div className={classes.unapprove}>{t('unapprove')}</div>
+        <div className={classes.approve}>{t('approve')}</div>
       </div>
     </div>
   );

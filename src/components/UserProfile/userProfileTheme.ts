@@ -6,6 +6,8 @@ const userProfileStyles = makeStyles({
       padding: '60px 0',
       marginBottom: '64px',
       background: 'rgba(0, 0, 0, 0.02)',
+      maxHeight: 'calc(100vh - 248px)',
+      overflowY: 'auto',
     },
   },
   TabTitle: {
@@ -96,6 +98,11 @@ const userProfileStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
+    padding: '10px 16px',
+  },
+  groupAction: {
+    display: 'flex',
+    gap: '16px',
   },
   delete: {
     border: '1px solid var(--delete-color)',
@@ -108,6 +115,7 @@ const userProfileStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: '13px',
+    cursor: 'pointer',
   },
   edit: {
     border: '1px solid #F8A700',
@@ -120,6 +128,33 @@ const userProfileStyles = makeStyles({
     display: 'flex',
     alignItems: 'center',
     gap: '13px',
+    cursor: 'pointer',
+  },
+  unapprove: {
+    border: 'var(--primary-border)',
+    padding: '8px 16px',
+    color: 'var(--primary-color)',
+    fontSize: '16px',
+    lineHeight: '24px',
+    fontWeight: 600,
+    borderRadius: '24px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '13px',
+    cursor: 'pointer',
+  },
+  approve: {
+    padding: '8px 16px',
+    color: 'var(--primary-color)',
+    fontSize: '16px',
+    lineHeight: '24px',
+    fontWeight: 600,
+    borderRadius: '24px',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '13px',
+    background: 'var(--bg-gradient-color)',
+    cursor: 'pointer',
   },
 });
 

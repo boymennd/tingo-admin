@@ -22,4 +22,6 @@
 
 .css-zxdg2z{
 	padding: 0 !important;
+	max-height: calc(100vh - 72px) !important;
+	overflow-y: hidden;
 }
