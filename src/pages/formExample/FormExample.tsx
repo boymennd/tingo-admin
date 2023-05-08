@@ -56,6 +56,10 @@ const FormExample = () => {
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(10);
   const [query, setQuery] = useState<string>('');
+  const [showHistorySearch, setShowHistorySearch] = useState<boolean>(false);
+  const [listHistorySearch, setListHistorySearch] = useState<any>(
+    JSON.parse(localStorage.getItem('lstHistorySearch') || '') || []
+  );
 
   const globalTheme = useTheme(); //(optional) if you already have a theme defined in your app root, you can import here
 
@@ -116,7 +120,8 @@ const FormExample = () => {
               display: 'flex',
               alignItems: 'center',
               gap: '1rem',
-            }}>
+            }}
+          >
             <span>{renderedCellValue}</span>
           </Box>
         ),
@@ -141,7 +146,8 @@ const FormExample = () => {
               color: theme.palette.warning.dark,
               maxWidth: '9ch',
               p: '0.25rem',
-            })}>
+            })}
+          >
             {cell.getValue<number>()?.toLocaleString?.('en-US', {
               style: 'currency',
               currency: 'USD',
@@ -164,7 +170,8 @@ const FormExample = () => {
               color: theme.palette.success.dark,
               maxWidth: '9ch',
               p: '0.25rem',
-            })}>
+            })}
+          >
             {cell.getValue<number>()?.toLocaleString?.('en-US', {
               style: 'currency',
               currency: 'USD',
@@ -215,6 +222,36 @@ const FormExample = () => {
     ],
     [i18n.language]
   );
+
+  const handleShowHistorySearch = () => {
+    if (listHistorySearch.length) {
+      setShowHistorySearch(true);
+    }
+  };
+
+  const handleHideHistorySearch = () => {
+    setShowHistorySearch(false);
+  };
+
+  const handleChangeSearch = (e: any) => {
+    if (e.key === 'Enter' && e.target.value && !listHistorySearch.includes(e.target.value)) {
+      let newList = [...listHistorySearch, e.target.value];
+      setListHistorySearch(newList);
+      localStorage.setItem('lstHistorySearch', JSON.stringify(newList));
+      setQuery(e.target.value);
+    }
+  };
+
+  const handleRemoveSearchHistory = (item: string) => {
+    if (!!item) {
+      let newList = listHistorySearch.filter((el: string) => el != item);
+      setListHistorySearch(newList);
+      localStorage.setItem('lstHistorySearch', JSON.stringify(newList));
+    } else {
+      setListHistorySearch([]);
+      localStorage.setItem('lstHistorySearch', JSON.stringify([]));
+    }
+  };
 
   const handleImportFile = (e: any) => {
     const files = e.target.files;
@@ -284,6 +321,9 @@ const FormExample = () => {
                 '&::-webkit-scrollbar': {
                   height: 10,
                 },
+                '& .Mui-ToolbarDropZone': {
+                  display: 'none',
+                },
                 '&::-webkit-scrollbar-track': {
                   boxShadow: 'inset 0 0 5px rgb(255, 251, 251)',
                   borderRadius: '10px',
@@ -292,6 +332,17 @@ const FormExample = () => {
                 '&::-webkit-scrollbar-thumb': {
                   background: '#AEAEAE',
                   borderRadius: '6px',
+                },
+              },
+            }}
+            muiTopToolbarProps={{
+              sx: {
+                position: 'unset',
+                '& .Mui-ToolbarDropZone': {
+                  display: 'none',
+                },
+                '& .css-sq9qdz': {
+                  position: 'unset',
                 },
               },
             }}
@@ -320,6 +371,7 @@ const FormExample = () => {
               },
             }}
             initialState={{
+              showToolbarDropZone: false,
               columnPinning: {
                 right: ['typeTransaction', 'mrt-row-actions', 'mrt-row-expand'],
               },
@@ -327,19 +379,17 @@ const FormExample = () => {
             positionToolbarAlertBanner="bottom"
             renderToolbarInternalActions={({ table }) => {
               const handleDeactivate = () => {
-                let dataExport = table
-                  .getSelectedRowModel()
-                  .flatRows.map((row) => {
-                    return {
-                      firstName: row.original.lastName,
-                      lastName: row.original.lastName,
-                      email: row.original.email,
-                      transactionAmount: row.original.transactionAmount,
-                      commissionAmount: row.original.commissionAmount,
-                      typeTransaction: row.original.typeTransaction,
-                      transactionDate: row.original.transactionDate,
-                    };
-                  });
+                let dataExport = table.getSelectedRowModel().flatRows.map((row) => {
+                  return {
+                    firstName: row.original.lastName,
+                    lastName: row.original.lastName,
+                    email: row.original.email,
+                    transactionAmount: row.original.transactionAmount,
+                    commissionAmount: row.original.commissionAmount,
+                    typeTransaction: row.original.typeTransaction,
+                    transactionDate: row.original.transactionDate,
+                  };
+                });
                 const ws = utils.json_to_sheet(dataExport);
                 const wb = utils.book_new();
                 utils.book_append_sheet(wb, ws, 'SheetJS');
@@ -352,7 +402,8 @@ const FormExample = () => {
                     display: 'flex',
                     gap: '0.5rem',
                     padding: '0.5rem',
-                  }}>
+                  }}
+                >
                   <Button
                     sx={{
                       textTransform: 'none',
@@ -363,7 +414,8 @@ const FormExample = () => {
                     color="primary"
                     disabled={!table.getIsSomeRowsSelected()}
                     onClick={handleDeactivate}
-                    variant="outlined">
+                    variant="outlined"
+                  >
                     <FileDownloadOutlinedIcon sx={{ mr: 1 }} />
                     {t('exportData')}
                   </Button>
@@ -377,7 +429,8 @@ const FormExample = () => {
                       height: 40,
                     }}
                     color="success"
-                    variant="contained">
+                    variant="contained"
+                  >
                     <AddIcon />
                     {t('btnAddNewuser')}
                   </Button>
@@ -390,19 +443,12 @@ const FormExample = () => {
                   display: 'flex',
                   justifyContent: 'space-around',
                   alignItems: 'center',
-                }}>
-                <img
-                  alt="avatar"
-                  height={200}
-                  src={''}
-                  loading="lazy"
-                  style={{ borderRadius: '50%' }}
-                />
+                }}
+              >
+                <img alt="avatar" height={200} src={''} loading="lazy" style={{ borderRadius: '50%' }} />
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4">Signature Catch Phrase:</Typography>
-                  <Typography variant="h1">
-                    &quot;{row.original.email}&quot;
-                  </Typography>
+                  <Typography variant="h1">&quot;{row.original.email}&quot;</Typography>
                 </Box>
               </Box>
             )}
@@ -413,7 +459,8 @@ const FormExample = () => {
                   // View profile logic...
                   closeMenu();
                 }}
-                sx={{ m: 0 }}>
+                sx={{ m: 0 }}
+              >
                 <ListItemIcon>
                   <AccountCircle />
                 </ListItemIcon>
@@ -425,7 +472,8 @@ const FormExample = () => {
                   // Send email logic...
                   closeMenu();
                 }}
-                sx={{ m: 0 }}>
+                sx={{ m: 0 }}
+              >
                 <ListItemIcon>
                   <Send />
                 </ListItemIcon>
@@ -434,31 +482,64 @@ const FormExample = () => {
             ]}
             renderTopToolbarCustomActions={({ table }) => {
               return (
-                <Box>
-                  <TextField
-                    id="query"
-                    name="query"
-                    value={query}
-                    onChange={onChange.bind(this, setQuery, query)}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <ListItemIcon sx={{ minWidth: 24 }}>
-                            <SearchIcon />
-                          </ListItemIcon>
-                        </InputAdornment>
-                      ),
-                      sx: {
-                        borderRadius: 24,
-                        width: 325,
-                        height: 40,
-                      },
-                    }}
-                    placeholder="Search name, email, phone number"
-                  />
-                  <MRT_ToggleFiltersButton table={table} />
-                  <MRT_ShowHideColumnsButton table={table} />
-                </Box>
+                <>
+                  <Box display={'flex'}>
+                    <Box>
+                      <TextField
+                        id="query"
+                        name="query"
+                        onKeyDown={handleChangeSearch}
+                        onFocus={handleShowHistorySearch}
+                        onBlur={handleHideHistorySearch}
+                        InputProps={{
+                          autoComplete: 'off',
+                          startAdornment: (
+                            <InputAdornment position="start">
+                              <ListItemIcon sx={{ minWidth: 24 }}>
+                                <SearchIcon />
+                              </ListItemIcon>
+                            </InputAdornment>
+                          ),
+                          sx: {
+                            borderRadius: 24,
+                            width: 325,
+                          },
+                        }}
+                        placeholder="Search name, email, phone numb er"
+                      />
+                      <Box
+                        sx={{
+                          display: showHistorySearch ? '' : 'none',
+
+                          borderRadius: '12px',
+                          width: 325,
+                          padding: '16px',
+                          position: 'absolute',
+                          zIndex: '100',
+                          backgroundColor: '#fff',
+                        }}
+                      >
+                        <Box display={'flex'} justifyContent={'space-between'}>
+                          <Typography>Recently</Typography>
+                          <Typography onMouseDown={() => handleRemoveSearchHistory('')} sx={{ cursor: 'pointer' }}>
+                            Remove History
+                          </Typography>
+                        </Box>
+                        {listHistorySearch.map((item: string, index: number) => (
+                          <Box key={index} display={'flex'} justifyContent={'space-between'}>
+                            <Typography>{item}</Typography>
+                            <Typography onMouseDown={() => handleRemoveSearchHistory(item)} sx={{ cursor: 'pointer' }}>
+                              X
+                            </Typography>
+                          </Box>
+                        ))}
+                      </Box>
+                    </Box>
+
+                    <MRT_ToggleFiltersButton table={table} />
+                    <MRT_ShowHideColumnsButton table={table} />
+                  </Box>
+                </>
               );
             }}
             muiTableHeadCellProps={{
