@@ -122,7 +122,8 @@ const DashboardDefauft = () => {
                 onClick={() => setSlot('month')}
                 color={slot === 'month' ? 'primary' : 'secondary'}
                 variant={slot === 'month' ? 'outlined' : 'text'}
-                sx={{ textTransform: 'none' }}>
+                sx={{ textTransform: 'none' }}
+              >
                 {t('month')}
               </Button>
               <Button
@@ -130,7 +131,8 @@ const DashboardDefauft = () => {
                 onClick={() => setSlot('week')}
                 color={slot === 'week' ? 'primary' : 'secondary'}
                 variant={slot === 'week' ? 'outlined' : 'text'}
-                sx={{ textTransform: 'none' }}>
+                sx={{ textTransform: 'none' }}
+              >
                 {t('week')}
               </Button>
             </Stack>
@@ -203,8 +205,9 @@ const DashboardDefauft = () => {
               onChange={(e) => setValue(e.target.value)}
               sx={{
                 '& .MuiInputBase-input': { py: 0.5, fontSize: '0.875rem' },
-              }}>
-              {status.map((option) => (
+              }}
+            >
+              {status.map((option, i) => (
                 <MenuItem key={option.value} value={option.value}>
                   {option.label}
                 </MenuItem>
@@ -245,14 +248,16 @@ const DashboardDefauft = () => {
                   position: 'relative',
                 },
               },
-            }}>
+            }}
+          >
             <ListItemButton divider>
               <ListItemAvatar>
                 <Avatar
                   sx={{
                     color: 'success.main',
                     bgcolor: 'success.lighter',
-                  }}>
+                  }}
+                >
                   <CardGiftcardOutlinedIcon />
                 </Avatar>
               </ListItemAvatar>
@@ -281,7 +286,8 @@ const DashboardDefauft = () => {
                   sx={{
                     color: 'primary.main',
                     bgcolor: 'primary.lighter',
-                  }}>
+                  }}
+                >
                   <MessageOutlinedIcon />
                 </Avatar>
               </ListItemAvatar>
@@ -310,7 +316,8 @@ const DashboardDefauft = () => {
                   sx={{
                     color: 'error.main',
                     bgcolor: 'error.lighter',
-                  }}>
+                  }}
+                >
                   <SettingsOutlinedIcon />
                 </Avatar>
               </ListItemAvatar>
@@ -352,7 +359,8 @@ const DashboardDefauft = () => {
             <Button
               size="small"
               variant="contained"
-              sx={{ textTransform: 'capitalize' }}>
+              sx={{ textTransform: 'capitalize' }}
+            >
               {t('titleSupport3')}?
             </Button>
           </Stack>

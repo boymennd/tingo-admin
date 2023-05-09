@@ -6,7 +6,7 @@ const userProfileStyles = makeStyles({
       padding: '60px 0',
       marginBottom: '64px',
       background: 'rgba(0, 0, 0, 0.02)',
-      maxHeight: 'calc(100vh - 248px)',
+      maxHeight: 'calc(100vh - 272px)',
       overflowY: 'auto',
     },
   },

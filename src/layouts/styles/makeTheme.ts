@@ -134,14 +134,14 @@ const useStyles = makeStyles({
   MButton: {
     width: '100%',
     height: '56px',
-    fontSize: '16px',
-    borderRadius: '60px',
-    padding: '18px 24px',
+    fontSize: '16px !important',
+    borderRadius: '60px !important',
+    padding: '18px 24px !important',
     textTransform: 'none',
-    backgroundColor: 'var(--primary-color)',
-    fontWeight: '700',
+    backgroundColor: 'var(--primary-color) !important',
+    fontWeight: '700 !important',
     '&:hover': {
-      backgroundColor: 'var(--primary-color)',
+      backgroundColor: 'var(--primary-color) !important',
     },
   },
   MTextValidate: {
@@ -256,6 +256,41 @@ const useStyles = makeStyles({
 
     '& .MuiCheckbox-colorPrimary.Mui-checked': {
       color: '#1A2038',
+    },
+  },
+  showPassword: {
+    position: 'absolute',
+    bottom: '16px',
+    right: '16px',
+    height: '24px',
+    background: '#fff',
+    cursor: 'pointer',
+  },
+  breadcrumbs: {
+    height: 'fit-content',
+    padding: '24px 24px 0 24px',
+    fontWeight: 600,
+    fontSize: '14px',
+    lineHeight: '24px',
+    color: 'rgba(0, 0, 0, 0.5)',
+    zIndex: '5',
+  },
+  bcItem: {
+    marginRight: '10px',
+    textTransform: 'capitalize',
+    cursor: 'pointer',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
+    '&:after': {
+      content: '"/"',
+      marginLeft: '10px',
+    },
+    '&:last-child': {
+      color: 'var(--primary-color)',
+      '&:after': {
+        content: '""',
+      },
     },
   },
 });

@@ -7,6 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { NavLink, useNavigate } from 'react-router-dom';
 import bg_login from '../../assets/images/bg_login.png';
 import enLocale from '../../assets/images/enLocale.png';
+import HidePasswordIcon from '../../assets/images/hide-password.png';
+import ShowPasswordIcon from '../../assets/images/show-password.png';
 import logo from '../../assets/images/logo.png';
 import zhLocale from '../../assets/images/zhLocale.png';
 import { useStyles } from '../../layouts/styles/makeTheme';
@@ -17,138 +19,153 @@ import { useAppDispatch } from '../../store/store';
 import { objectNullOrEmpty } from '../../utils/utils';
 
 const lstLocale = [
-	{
-		prefix: 'en',
-		imgUrl: enLocale,
-		name: 'English',
-	},
-	{
-		prefix: 'zh',
-		imgUrl: zhLocale,
-		name: 'Hong Kong',
-	},
+  {
+    prefix: 'en',
+    imgUrl: enLocale,
+    name: 'English',
+  },
+  {
+    prefix: 'zh',
+    imgUrl: zhLocale,
+    name: 'Hong Kong',
+  },
 ];
 
 export default function Login() {
-	const classes = useStyles();
-	const { t } = useTranslation(['account']);
-	const navigate = useNavigate();
-	const dispatch = useAppDispatch();
-	const [errorLogin, setErrorLogin] = useState<any>({});
+  const classes = useStyles();
+  const { t } = useTranslation(['account']);
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const [errorLogin, setErrorLogin] = useState<any>({});
+  const [showPassword, setShowPassword] = useState(false);
 
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm({
-		defaultValues: {
-			username: '',
-			password: '',
-		},
-	});
-	const [currentLocate, setCurrentLocate] = useState<any>(
-		lstLocale.find((it: any) => it.prefix === i18n.language)
-	);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      username: '',
+      password: '',
+    },
+  });
+  const [currentLocate, setCurrentLocate] = useState<any>(
+    lstLocale.find((it: any) => it.prefix === i18n.language)
+  );
 
-	useEffect(() => {
-		if (i18n.language) {
-			const locate: any = lstLocale.find(
-				(it: any) => it.prefix === i18n.language
-			);
-			if (!objectNullOrEmpty(locate)) {
-				setCurrentLocate(locate);
-			}
-		}
-	}, [i18n.language]);
+  useEffect(() => {
+    if (i18n.language) {
+      const locate: any = lstLocale.find(
+        (it: any) => it.prefix === i18n.language
+      );
+      if (!objectNullOrEmpty(locate)) {
+        setCurrentLocate(locate);
+      }
+    }
+  }, [i18n.language]);
 
-	const onChangeLanguage = (e: any) => {
-		i18n.changeLanguage(e.target.value);
-	};
+  const onChangeLanguage = (e: any) => {
+    i18n.changeLanguage(e.target.value);
+  };
 
-	const onHandleLogin = async (data: any) => {
-		dispatch(openLoading(true));
-		try {
-			// await dispatch(loginKeyCloakAsync(form));
-			const loginUser = await AuthenticationService.login(
-				data.username,
-				data.password
-			);
-			if (loginUser) {
-				const userInfo = {
-					username: loginUser?.username,
-					fullName: loginUser?.fullName,
-					email: loginUser?.email,
-					phone: loginUser?.phone,
-					isLogin: true,
-					permission: loginUser?.permission,
-					role: loginUser?.role,
-				};
-				dispatch(setUserInfo(userInfo));
-				setErrorLogin({});
-				navigate('/', { replace: true });
-			} else {
-				errorLogin.isLogin = false;
-				setErrorLogin(errorLogin);
-			}
-			dispatch(openLoading(false));
-		} catch (e) {
-			dispatch(openLoading(false));
-		}
-	};
+  const onHandleLogin = async (data: any) => {
+    dispatch(openLoading(true));
+    try {
+      // await dispatch(loginKeyCloakAsync(form));
+      const loginUser = await AuthenticationService.login(
+        data.username,
+        data.password
+      );
+      if (loginUser) {
+        const userInfo = {
+          username: loginUser?.username,
+          fullName: loginUser?.fullName,
+          email: loginUser?.email,
+          phone: loginUser?.phone,
+          isLogin: true,
+          permission: loginUser?.permission,
+          role: loginUser?.role,
+        };
+        dispatch(setUserInfo(userInfo));
+        setErrorLogin({});
+        navigate('/', { replace: true });
+      } else {
+        errorLogin.isLogin = false;
+        setErrorLogin(errorLogin);
+      }
+      dispatch(openLoading(false));
+    } catch (e) {
+      dispatch(openLoading(false));
+    }
+  };
 
-	return (
-		<Box className={classes.MLoginWrapper}>
-			<form onSubmit={handleSubmit((data: any) => onHandleLogin(data))}>
-				<Grid container className={classes.MLoginContainer}>
-					<Grid
-						item
-						xs={6}
-						sx={{ display: 'flex', alignItems: 'center' }}
-						pr={4}
-					>
-						<Grid container p={2} sx={{ justifyContent: 'center' }}>
-							<img src={logo} alt='' style={{ marginBottom: '24px' }} />
-							{!objectNullOrEmpty(errorLogin) && !errorLogin.isLogin && (
-								<div className={classes.MTextValidate}>
-									{t('message.loginFail')}
-								</div>
-							)}
-							<Grid item xs={12} className={classes.MLoginInput}>
-								<div className={classes.MInputLabel}>{t('user')}</div>
-								<TextField
-									{...register('username', { required: true })}
-									className={classes.MTextField}
-									id={'username'}
-									name={'username'}
-									size={'small'}
-									fullWidth
-								/>
-								{errors.username && (
-									<div className={classes.MLoginInput}>
-										<Error sx={{ fontSize: 'large' }} />
-										{t('enterUser')}
-									</div>
-								)}
-							</Grid>
-							<Grid item xs={12} className={classes.MLoginInput}>
-								<div className={classes.MInputLabel}>{t('password')}</div>
-								<TextField
-									{...register('password', { required: true })}
-									className={classes.MTextField}
-									id={'password'}
-									name={'password'}
-									type='password'
-									autoComplete='current-password'
-									size={'small'}
-									fullWidth
-								/>
-								{errors.password && (
-									<div className={classes.MTextValidate}>
-										<Error sx={{ fontSize: 'large' }} />
-										{t('enterPassword')}
-									</div>
-								)}
-								{/* <Box sx={{ float: 'right' }}>
+  return (
+    <Box className={classes.MLoginWrapper}>
+      <form onSubmit={handleSubmit((data: any) => onHandleLogin(data))}>
+        <Grid container className={classes.MLoginContainer}>
+          <Grid
+            item
+            xs={6}
+            sx={{ display: 'flex', alignItems: 'center' }}
+            pr={4}
+          >
+            <Grid container p={2} sx={{ justifyContent: 'center' }}>
+              <img src={logo} alt="" style={{ marginBottom: '24px' }} />
+              {!objectNullOrEmpty(errorLogin) && !errorLogin.isLogin && (
+                <div className={classes.MTextValidate}>
+                  {t('message.loginFail')}
+                </div>
+              )}
+              <Grid item xs={12} className={classes.MLoginInput}>
+                <div className={classes.MInputLabel}>{t('user')}</div>
+                <TextField
+                  {...register('username', { required: true })}
+                  className={classes.MTextField}
+                  id={'username'}
+                  name={'username'}
+                  size={'small'}
+                  fullWidth
+                />
+                {errors.username && (
+                  <div className={classes.MLoginInput}>
+                    <Error sx={{ fontSize: 'large' }} />
+                    {t('enterUser')}
+                  </div>
+                )}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                className={classes.MLoginInput}
+                sx={{ position: 'relative' }}
+              >
+                <div className={classes.MInputLabel}>{t('password')}</div>
+                <TextField
+                  {...register('password', { required: true })}
+                  className={classes.MTextField}
+                  id={'password'}
+                  name={'password'}
+                  type={!showPassword ? 'password' : 'text'}
+                  autoComplete="current-password"
+                  size={'small'}
+                  fullWidth
+                />
+                <div
+                  className={classes.showPassword}
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  <img
+                    src={!showPassword ? HidePasswordIcon : ShowPasswordIcon}
+                    alt=""
+                  />
+                </div>
+                {errors.password && (
+                  <div className={classes.MTextValidate}>
+                    <Error sx={{ fontSize: 'large' }} />
+                    {t('enterPassword')}
+                  </div>
+                )}
+                {/* <Box sx={{ float: 'right' }}>
 									<NavLink
 										to={'/forgot-password'}
 										style={{ textDecoration: 'none' }}
@@ -158,40 +175,40 @@ export default function Login() {
 										</Typography>
 									</NavLink>
 								</Box> */}
-							</Grid>
-							<Grid
-								item
-								xs={12}
-								sx={{
-									marginTop: '28px',
-								}}
-							>
-								<Button
-									className={classes.MButton}
-									variant={'contained'}
-									type={'submit'}
-								>
-									{t('signIn')}
-								</Button>
-							</Grid>
-							<Box sx={{ marginTop: '42px' }}>
-								<NavLink
-									to={'/forgot-password'}
-									style={{ textDecoration: 'none' }}
-								>
-									<Typography
-										fontSize={'small'}
-										sx={{
-											color: 'var(--primary-color)',
-											fontSize: '16px',
-											fontWeight: '700',
-										}}
-									>
-										{t('forgotPassword')}
-									</Typography>
-								</NavLink>
-							</Box>
-							{/* <Grid
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  marginTop: '28px',
+                }}
+              >
+                <Button
+                  className={classes.MButton}
+                  variant={'contained'}
+                  type={'submit'}
+                >
+                  {t('signIn')}
+                </Button>
+              </Grid>
+              <Box sx={{ marginTop: '42px' }}>
+                <NavLink
+                  to={'/forgot-password'}
+                  style={{ textDecoration: 'none' }}
+                >
+                  <Typography
+                    fontSize={'small'}
+                    sx={{
+                      color: 'var(--primary-color)',
+                      fontSize: '16px',
+                      fontWeight: '700',
+                    }}
+                  >
+                    {t('forgotPassword')}
+                  </Typography>
+                </NavLink>
+              </Box>
+              {/* <Grid
 								item
 								xs={12}
 								sx={{ display: 'flex', justifyContent: 'flex-start' }}
@@ -203,7 +220,7 @@ export default function Login() {
 									<Typography fontSize={'small'}>{t('register')}</Typography>
 								</NavLink>
 							</Grid> */}
-							{/* <Grid
+              {/* <Grid
 								item
 								xs={12}
 								sx={{ display: 'flex', justifyContent: 'flex-start' }}
@@ -235,22 +252,22 @@ export default function Login() {
 									</Select>
 								</FormControl>
 							</Grid> */}
-						</Grid>
-					</Grid>
-					<Grid item xs={6}>
-						<Box
-							sx={{
-								display: 'flex',
-								justifyContent: 'center',
-								alignItems: 'center',
-								height: '100%',
-							}}
-						>
-							<img src={bg_login} width='100%' alt={''} />
-						</Box>
-					</Grid>
-				</Grid>
-			</form>
-		</Box>
-	);
+            </Grid>
+          </Grid>
+          <Grid item xs={6}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100%',
+              }}
+            >
+              <img src={bg_login} width="100%" alt={''} />
+            </Box>
+          </Grid>
+        </Grid>
+      </form>
+    </Box>
+  );
 }
