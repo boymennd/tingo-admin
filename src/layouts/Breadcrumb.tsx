@@ -1,32 +1,38 @@
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useStyles } from './styles/makeTheme';
+import { useMemo } from 'react';
+import path from 'path';
 
-function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
-	event.preventDefault();
-	console.info('You clicked a breadcrumb.');
-}
+const getBreadcrumbs = (pathname: string) => {
+  const getPaths = pathname.replace('/', '').replaceAll('-', ' ').split('/');
+  return getPaths;
+};
+const getLink = (pathname: string, index: number) => {
+  const paths = pathname.split('/');
+  const remainPaths = paths.slice(1, index + 2);
+  const link = remainPaths.reduce((link, path) => link + `/${path}`, '');
+  return link;
+};
 
 export default function Breadcrumb() {
-	const { pathname } = useLocation();
-	return (
-		<div role='presentation' onClick={handleClick}>
-			<Breadcrumbs aria-label='breadcrumb'>
-				<Link underline='hover' color='inherit' href='/'>
-					MUI
-				</Link>
-				<Link underline='hover' color='inherit' href={pathname}>
-					pathname
-				</Link>
-				<Link
-					underline='hover'
-					color='text.primary'
-					href='/material-ui/react-breadcrumbs/'
-					aria-current='page'
-				>
-					Breadcrumbs
-				</Link>
-			</Breadcrumbs>
-		</div>
-	);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const classes = useStyles();
+  const breadcrumbs = useMemo(() => getBreadcrumbs(pathname), [pathname]);
+
+  return (
+    <div className={classes.breadcrumbs}>
+      {breadcrumbs?.map((name, i) => (
+        <span
+          className={classes.bcItem}
+          key={i}
+          onClick={() => navigate(getLink(pathname, i))}
+        >
+          {name}
+        </span>
+      ))}
+    </div>
+  );
 }
