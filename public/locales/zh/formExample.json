@@ -1,5 +1,5 @@
 {
-  "exampleForm": "范例表格",
+  "titleUserList": "用户列表",
   "nameOrEmail": "姓名或电子邮件",
   "dateFrom": "日期从",
   "dateTo": "日期至",
@@ -12,11 +12,20 @@
   "import": "进口",
   "clear": "清除",
   "search": "搜索",
-  "exportData": "导出数据",
+  "exportData": "出口",
+  "btnAddNewuser": "添加新用户",
   "name": "姓名",
   "email": "电子邮件",
   "transactionAmount": "交易金额",
   "commissionAmount": "佣金金额",
   "typeTransaction": "交易类型",
-  "transactionDate": "交易日期"
+  "transactionDate": "交易日期",
+  "accountId": "帐户ID",
+  "registerDate": "注册日期",
+  "residentCountry": "居住国",
+  "phoneNumber": "电话号码",
+  "gender": "性别",
+  "approvedDate": "批准日期",
+  "status": "地位",
+  "dateOfBirth": "出生日期"
 }

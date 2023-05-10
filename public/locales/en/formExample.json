@@ -1,5 +1,5 @@
 {
-  "exampleForm": "Example form",
+  "titleUserList": "User List",
   "nameOrEmail": "Name or Email",
   "dateFrom": "Date from",
   "dateTo": "Date to",
@@ -12,11 +12,20 @@
   "import": "Import",
   "clear": "Clear",
   "search": "Search",
-  "exportData": "Export Data",
+  "exportData": "Export",
+  "btnAddNewuser": "Add New User",
   "name": "Name",
   "email": "Email",
   "transactionAmount": "Transaction Amount",
   "commissionAmount": "Commission Amount",
   "typeTransaction": "Type Transaction",
-  "transactionDate": "Transaction Date"
+  "transactionDate": "Transaction Date",
+  "accountId": "Account ID",
+  "registerDate": "Reg Date",
+  "residentCountry": "Resident Country",
+  "phoneNumber": "Phone Number",
+  "gender": "Gender",
+  "approvedDate": "Approved Date",
+  "status": "status",
+  "dateOfBirth": "Date Of Birth"
 }
