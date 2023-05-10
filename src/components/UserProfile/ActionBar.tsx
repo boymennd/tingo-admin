@@ -4,6 +4,7 @@ import deleteIcon from '../../assets/images/delete.png';
 import editIcon from '../../assets/images/edit.png';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../store/store';
+import BtnBorder from '../common/BtnBorder';
 
 interface Props {
   setShowModal: (value: boolean) => void;
@@ -26,9 +27,7 @@ const ActionBar = ({ setShowModal }: Props) => {
         <div className={classes.delete} onClick={() => setShowModal(true)}>
           <img src={deleteIcon} alt="Delete" /> {t('delete')}
         </div>
-        <div className={classes.edit}>
-          <img src={editIcon} alt="Edit" /> {t('edit')}
-        </div>
+        <BtnBorder image={editIcon} text={t('edit')} />
       </div>
       <div className={classes.groupAction}>
         <div className={classes.unapprove}>{t('unapprove')}</div>

@@ -27,7 +27,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import enLocale from '../assets/images/enLocale.png';
 import logo from '../assets/images/logo.png';
 import menu from '../assets/images/menu.png';
-import user from '../assets/images/user.png';
+import user from '../assets/images/user_menu.png';
+import star from '../assets/images/star_menu.png';
 import menuCollapse from '../assets/images/menuCollapse.png';
 import zhLocale from '../assets/images/zhLocale.png';
 import TLoadingUI from '../components/common/TLoading/TLoadingUI';
@@ -42,15 +43,20 @@ import { useStyles } from './styles/makeTheme';
 import { changeMenu } from '../store/slices/layoutSlice';
 
 const menuItems = [
+  { route: '/', name: 'dashboard', icon: <Dashboard /> },
+  { route: '/profile', name: 'profile', icon: <Person /> },
+  { route: '/user-management', name: 'userManagement', icon: <Group /> },
+  { route: '/form-example', name: 'example', icon: <Equalizer /> },
   {
     route: '/user-profile',
     name: 'userProfile',
     icon: <img src={user} alt="" />,
   },
-  { route: '/', name: 'dashboard', icon: <Dashboard /> },
-  { route: '/profile', name: 'profile', icon: <Person /> },
-  { route: '/user-management', name: 'userManagement', icon: <Group /> },
-  { route: '/form-example', name: 'example', icon: <Equalizer /> },
+  {
+    route: '/high-risk-country-list',
+    name: 'highRiskCountryList',
+    icon: <img src={star} alt="" />,
+  },
 ];
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -244,7 +250,13 @@ export default function Layout({ children }: Props) {
         >
           {icon}
         </ListItemIcon>
-        <ListItemText primary={item} sx={{ opacity: menuOpen ? 1 : 0 }} />
+        <ListItemText
+          primary={item}
+          sx={{
+            opacity: menuOpen ? 1 : 0,
+          }}
+          className={classes.MItemText}
+        />
       </ListItemButton>
     );
   };
