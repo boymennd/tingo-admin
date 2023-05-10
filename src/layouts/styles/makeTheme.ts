@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     },
     '& .MuiButtonBase-root': {
       color: 'var(--parimary-color)',
-      padding: '16px 24px',
+      padding: '16px 5px 16px 26px',
       borderRadius: '0px 8px 8px 0px',
       width: '200px',
     },
@@ -107,6 +107,13 @@ const useStyles = makeStyles({
   MLoginInput: {
     marginBottom: '20px',
     padding: 0,
+  },
+  MItemText: {
+    '& span': {
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+    },
   },
   MTextField: {
     '& .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root': {
