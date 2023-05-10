@@ -300,6 +300,23 @@ const useStyles = makeStyles({
       },
     },
   },
+
+  MLabelStatus: {
+    padding: '4px 12px',
+    borderRadius: '8px',
+    textAlign: 'center',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+
+  MBtnContained: {
+    background: 'var(--bg-gradient-color)',
+    borderRadius: '24px !important',
+    color: 'var(--primary-color) !important',
+    width: 175,
+    height: 40,
+  },
 });
 
 export { useStyles };
