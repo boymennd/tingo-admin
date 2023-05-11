@@ -15,6 +15,9 @@
 	--sidebar-width: 216px;
 	--sidebar-width-collapse: 72px;
 	--bg-content: 0, 0, 0, 0.02;
+	--secondary-color: rgba(0, 0, 0, 0.6);
+	--detail-data-bg: rgba(0, 0, 0, 0.02);
+	--boder-input-color: rgba(0, 0, 0, 0.1);
 }
 
 * {

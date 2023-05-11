@@ -126,7 +126,9 @@ const useStyles = makeStyles({
       },
     },
     '& .MuiOutlinedInput-root': {
-      borderRadius: '12px',
+      borderRadius: '24px',
+      backgroundColor: '#fff',
+      height: '35px',
       '& fieldset': {
         border: 'var(--primary-border)',
       },
@@ -299,6 +301,23 @@ const useStyles = makeStyles({
         content: '""',
       },
     },
+  },
+
+  MLabelStatus: {
+    padding: '4px 12px',
+    borderRadius: '8px',
+    textAlign: 'center',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+  },
+
+  MBtnContained: {
+    background: 'var(--bg-gradient-color)',
+    borderRadius: '24px !important',
+    color: 'var(--primary-color) !important',
+    width: 175,
+    height: 40,
   },
 });
 

@@ -43,14 +43,14 @@ import { useStyles } from './styles/makeTheme';
 import { changeMenu } from '../store/slices/layoutSlice';
 
 const menuItems = [
-  { route: '/', name: 'dashboard', icon: <Dashboard /> },
+  { route: '/', name: 'userList', icon: <Person /> },
+  { route: '/dashboard', name: 'dashboard', icon: <Dashboard /> },
   { route: '/profile', name: 'profile', icon: <Person /> },
   { route: '/user-management', name: 'userManagement', icon: <Group /> },
-  { route: '/form-example', name: 'example', icon: <Equalizer /> },
   {
     route: '/user-profile',
     name: 'userProfile',
-    icon: <img src={user} alt="" />,
+    icon: <Person />,
   },
   {
     route: '/high-risk-country-list',
@@ -239,15 +239,13 @@ export default function Layout({ children }: Props) {
           px: 2.5,
         }}
         selected={path === location?.pathname}
-        onClick={() => onNavigateToPage(path)}
-      >
+        onClick={() => onNavigateToPage(path)}>
         <ListItemIcon
           sx={{
             minWidth: 0,
             mr: menuOpen ? 3 : 'auto',
             justifyContent: 'center',
-          }}
-        >
+          }}>
           {icon}
         </ListItemIcon>
         <ListItemText
@@ -273,8 +271,7 @@ export default function Layout({ children }: Props) {
             edge="start"
             sx={{
               marginRight: 3,
-            }}
-          >
+            }}>
             <img src={!menuOpen ? menu : menuCollapse} alt={menu} />
           </IconButton>
           <img src={logo} alt="" style={{ height: 42 }} />
@@ -285,8 +282,7 @@ export default function Layout({ children }: Props) {
               sx={{ ml: 2 }}
               aria-controls={openLocaleMenu ? 'account-menu' : undefined}
               aria-haspopup="true"
-              aria-expanded={openLocaleMenu ? 'true' : undefined}
-            >
+              aria-expanded={openLocaleMenu ? 'true' : undefined}>
               <Avatar
                 alt=""
                 src={
@@ -305,16 +301,14 @@ export default function Layout({ children }: Props) {
                 className: classes.MMenuPaperProps,
               }}
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            >
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
               {lstLocateChange &&
                 lstLocateChange.length > 0 &&
                 lstLocateChange.map((it: any) => {
                   return (
                     <MenuItem
                       key={it.name}
-                      onClick={() => onChangeLanguage(it.prefix)}
-                    >
+                      onClick={() => onChangeLanguage(it.prefix)}>
                       <IconButton size="small">
                         <Avatar alt="" src={it.imgUrl} />
                       </IconButton>
@@ -329,8 +323,7 @@ export default function Layout({ children }: Props) {
               sx={{ ml: 2 }}
               aria-controls={openUserMenu ? 'account-menu' : undefined}
               aria-haspopup="true"
-              aria-expanded={openUserMenu ? 'true' : undefined}
-            >
+              aria-expanded={openUserMenu ? 'true' : undefined}>
               <div
                 style={{
                   width: 48,
@@ -343,8 +336,7 @@ export default function Layout({ children }: Props) {
                   backgroundColor: '#FFF5DB',
                   textTransform: 'uppercase',
                   borderRadius: 48,
-                }}
-              >
+                }}>
                 {userInfo?.username?.slice(0, 2) || ''}
               </div>
             </IconButton>
@@ -359,8 +351,7 @@ export default function Layout({ children }: Props) {
                 className: classes.MMenuPaperProps,
               }}
               transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            >
+              anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}>
               <MenuItem>
                 {t('hi')}&nbsp;
                 <Typography>
@@ -394,8 +385,7 @@ export default function Layout({ children }: Props) {
         <Drawer
           variant="permanent"
           open={menuOpen}
-          className={classes.MSideBarContainer}
-        >
+          className={classes.MSideBarContainer}>
           <List sx={{ padding: '24px 0' }}>
             {menuItems?.map((menuItem) =>
               SidebarItem(t(menuItem.name), menuItem.route, menuItem.icon)

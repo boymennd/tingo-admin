@@ -19,6 +19,11 @@ export enum PREFIX_LOCALE {
   ZH = 'zh',
 }
 
+export enum STATUS {
+  APPROVED = 'approved',
+  UNAPPROVED = 'unapproved',
+}
+
 export enum ERROR_CODE {
   TIME_OUT = 'timeout',
   NOT_AUTHORIZE = 'authentication.notAuthorize',
