@@ -43,7 +43,7 @@ import { useStyles } from './styles/makeTheme';
 import { changeMenu } from '../store/slices/layoutSlice';
 
 const menuItems = [
-  { route: '/user-list', name: 'userList', icon: <Person /> },
+  { route: '/', name: 'userList', icon: <Person /> },
   { route: '/dashboard', name: 'dashboard', icon: <Dashboard /> },
   { route: '/profile', name: 'profile', icon: <Person /> },
   { route: '/user-management', name: 'userManagement', icon: <Group /> },

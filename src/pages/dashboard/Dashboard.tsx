@@ -3,7 +3,7 @@ import DashboardMain from '../../components/dashboard/DashboardMain';
 
 export default function Dashboard() {
   return (
-    <div style={{ backgroundColor: '#fafafb' }}>
+    <div style={{ backgroundColor: '#fafafb', padding: 24 }}>
       <DashboardMain />
     </div>
   );

@@ -126,7 +126,9 @@ const useStyles = makeStyles({
       },
     },
     '& .MuiOutlinedInput-root': {
-      borderRadius: '12px',
+      borderRadius: '24px',
+      backgroundColor: '#fff',
+      height: '35px',
       '& fieldset': {
         border: 'var(--primary-border)',
       },

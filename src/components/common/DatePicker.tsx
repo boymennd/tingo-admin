@@ -1,8 +1,9 @@
-import { TextField } from '@mui/material';
+import { IconButton, TextField } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { useStyles } from '../../layouts/styles/makeTheme';
+import { Close } from '@mui/icons-material';
 
 interface DatePickerProps {
   handleOnChange: (value: any) => void;
@@ -23,10 +24,14 @@ export default function DatePickerDefault(props: DatePickerProps) {
         renderInput={(params: any) => (
           <TextField
             {...params}
-            sx={{ ...sx, width: '80%' }}
+            sx={{ ...sx, minWidth: 150 }}
             className={classes.MTextField}
             size={'small'}
             helperText={helperText ? helperText : ''}
+            inputProps={{
+              ...params.inputProps,
+              placeholder: 'Pick Date',
+            }}
           />
         )}
         value={value}

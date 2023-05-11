@@ -35,6 +35,7 @@ import { Lock, Edit, Visibility } from '@mui/icons-material';
 //Mock Data
 import { data } from '../../fakeData/dataStatistic';
 import BtnBorder from '../../components/common/BtnBorder';
+import DatePickerDefault from '../../components/common/DatePicker';
 
 export type Employee = {
   firstName: string;
@@ -83,7 +84,7 @@ const FormExample = () => {
   });
   const [currentLocale, setCurrentLocale] = useState(MRT_Localization_EN);
   const [page, setPage] = useState<number>(0);
-  const [pageSize, setPageSize] = useState<number>(10);
+  const [pageSize, setPageSize] = useState<number>(5);
   const [query, setQuery] = useState<string>('');
 
   const globalTheme = useTheme(); //(optional) if you already have a theme defined in your app root, you can import here
@@ -170,8 +171,18 @@ const FormExample = () => {
         header: t('registerDate'),
         filterFn: 'equals',
         sortingFn: 'datetime',
+        Filter: ({ column }) => (
+          <DatePickerDefault
+            handleOnChange={(newValue) => {
+              column.setFilterValue(newValue);
+            }}
+            placeholder={'dfasdf'}
+            sx={{ minWidth: 150 }}
+            value={!!column.getFilterValue() ? column.getFilterValue() : null}
+            key={'registerDate'}
+          />
+        ),
         size: 150,
-        muiTableHeadCellFilterTextFieldProps: { type: 'date' },
       },
       {
         accessorKey: 'residentCountry',
@@ -199,7 +210,17 @@ const FormExample = () => {
 
         size: 150,
 
-        muiTableHeadCellFilterTextFieldProps: { type: 'date' },
+        Filter: ({ column }) => (
+          <DatePickerDefault
+            handleOnChange={(newValue) => {
+              column.setFilterValue(newValue);
+            }}
+            placeholder={'dfasdf'}
+            sx={{ minWidth: 150 }}
+            value={!!column.getFilterValue() ? column.getFilterValue() : null}
+            key={'dateOfBirth'}
+          />
+        ),
       },
       {
         accessorKey: 'email',
@@ -216,10 +237,18 @@ const FormExample = () => {
         header: t('approvedDate'),
         filterFn: 'equals',
         sortingFn: 'datetime',
-
         size: 300,
-
-        muiTableHeadCellFilterTextFieldProps: { type: 'date' },
+        Filter: ({ column }) => (
+          <DatePickerDefault
+            handleOnChange={(newValue) => {
+              column.setFilterValue(newValue);
+            }}
+            placeholder={'dfasdf'}
+            sx={{ minWidth: 150 }}
+            value={!!column.getFilterValue() ? column.getFilterValue() : null}
+            key={'approvedDate'}
+          />
+        ),
       },
 
       {
@@ -408,12 +437,7 @@ const FormExample = () => {
   };
 
   return (
-    <Grid
-      container
-      rowSpacing={1}
-      columnSpacing={2.75}
-      p={'8px 24px'}
-      overflow={'hidden'}>
+    <Grid container rowSpacing={1} columnSpacing={2.75} p={'8px 24px'}>
       <Grid item xs={12}>
         <Typography variant="h4" fontWeight={'bold'}>
           {t('titleUserList')}
