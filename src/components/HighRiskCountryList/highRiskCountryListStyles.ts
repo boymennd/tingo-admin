@@ -21,7 +21,7 @@ const userHighRiskCountryListStyles = makeStyles({
     background: 'rgba(173, 173, 173, 0.4)',
   },
   TableContent: {
-    height: '100%',
+    height: 'fit-content',
     maxHeight: 'calc(100vh - 280px)',
     overflowY: 'auto',
     background: '#fff',
@@ -33,9 +33,6 @@ const userHighRiskCountryListStyles = makeStyles({
     fontWeight: 500,
     borderBottom: '1px solid rgba(173, 173, 173, 0.2)',
     borderRight: '1px solid rgba(173, 173, 173, 0.2)',
-    '&:last-child': {
-      borderBottom: 0,
-    },
   },
   TNo: {
     width: '60px',

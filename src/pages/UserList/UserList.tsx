@@ -485,15 +485,13 @@ const FormExample = () => {
                 '& .Mui-ToolbarDropZone': {
                   display: 'none',
                 },
-                '&::-webkit-scrollbar-track': {
-                  boxShadow: 'inset 0 0 5px rgb(255, 251, 251)',
-                  borderRadius: '10px',
-                },
-
                 '&::-webkit-scrollbar-thumb': {
+                  marginTop: 2,
                   background: '#AEAEAE',
-                  borderRadius: '6px',
                 },
+                // '&::-webkit-scrollbar-button': {
+                //   display: 'none',
+                // },
               },
             }}
             muiTopToolbarProps={{
