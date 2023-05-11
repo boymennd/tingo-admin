@@ -5,6 +5,9 @@ const UserManagement = lazy(
   () => import('../pages/userManagement/UserManagement')
 );
 const UserProfilePage = lazy(() => import('../pages/userProfile/UserProfile'));
+const HighRiskCountryList = lazy(
+  () => import('../pages/highRiskCountryList/HighRiskCountryList')
+);
 const Page404 = lazy(() => import('../pages/404/404'));
 const UserList = lazy(() => import('../pages/UserList/UserList'));
 const Profile = lazy(() => import('../pages/profile/Profile'));
@@ -20,6 +23,11 @@ const privateRoutes = [
   { path: '/profile', component: Profile },
   { path: '/', component: UserList, checkPermission: true },
   { path: '/user-profile', component: UserProfilePage, checkPermission: true },
+  {
+    path: '/high-risk-country-list',
+    component: HighRiskCountryList,
+    checkPermission: true,
+  },
   { path: '/404', component: Page404 },
   { path: '*', component: Dashboard },
 ];

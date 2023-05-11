@@ -1,20 +1,21 @@
 .btnBorder {
+  display: flex;
+  height: 40px;
   min-width: 112px;
   font-size: 16px;
   line-height: 24px;
   font-weight: 600;
   border-radius: 24px;
-  display: flex;
   align-items: center;
-  gap: 13px;
   cursor: pointer;
   padding: 1px;
   background-image: linear-gradient(313.09deg, #f05822 0%, #fbb421 103.33%);
 }
 
 .btnInside {
+  height: 38px;
   width: 100%;
-  padding: 8px 14px;
+  padding: 7px 15px;
   border-radius: 24px;
   background: #fff;
   color: transparent;
