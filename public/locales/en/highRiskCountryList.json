@@ -1,0 +1,12 @@
+{
+  "upload": "upload",
+  "cancel": "Cancel",
+  "no": "No.",
+  "highRiskCountryList": "High Risk Country List",
+  "availableCountries": "Available countries",
+  "unavailableCountries": "Unavailable countries",
+  "import": "Import",
+  "export": "Export",
+  "downloadTemplate": "Download Template",
+  "dropFileOrClickHereToImportFile": "Drop file or click cere to import file"
+}
