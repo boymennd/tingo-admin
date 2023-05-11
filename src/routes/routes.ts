@@ -18,7 +18,7 @@ const privateRoutes = [
   { path: '/dashboard', component: Dashboard },
   { path: '/user-management', component: UserManagement, checkRole: true },
   { path: '/profile', component: Profile },
-  { path: '/user-list', component: UserList, checkPermission: true },
+  { path: '/', component: UserList, checkPermission: true },
   { path: '/user-profile', component: UserProfilePage, checkPermission: true },
   { path: '/404', component: Page404 },
   { path: '*', component: Dashboard },

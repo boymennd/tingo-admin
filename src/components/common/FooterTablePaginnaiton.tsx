@@ -2,7 +2,14 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import { Box, Button, FormControl, MenuItem, Select } from '@mui/material';
+import {
+  Box,
+  Button,
+  FormControl,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
 import { borderRadius } from '@mui/system';
 import { Fragment, useEffect, useMemo, useState } from 'react';
 
@@ -25,7 +32,7 @@ const styleArrowButton = {
   borderRadius: 24,
 };
 
-const pages = [5, 10, 25, 50];
+const pages = [5, 10, 25, 50, 100];
 
 const filterPages = (visiblePages: any, totalPages: number) => {
   return visiblePages.filter((page: number) => page <= totalPages);
@@ -132,9 +139,13 @@ const FooterTablePagination = ({
       </Button>
       <FormControl>
         <Select
-          sx={{ width: 108, height: 32, borderRadius: 24 }}
+          sx={{ width: 108, height: 32, borderRadius: 24, textAlign: 'center' }}
           value={pageSize}
-          renderValue={(value: number) => `${value}/page`}
+          renderValue={(value: number) => (
+            <Typography
+              fontSize={14}
+              lineHeight={24}>{`${value} / page`}</Typography>
+          )}
           onChange={handleChangepageSize}
           inputProps={{ 'aria-label': 'Without label' }}>
           {pages.map((item: number) => (
