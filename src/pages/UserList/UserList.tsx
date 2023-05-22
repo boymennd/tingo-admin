@@ -243,7 +243,6 @@ const FormExample = () => {
             handleOnChange={(newValue) => {
               column.setFilterValue(newValue);
             }}
-            placeholder={'dfasdf'}
             sx={{ minWidth: 150 }}
             value={!!column.getFilterValue() ? column.getFilterValue() : null}
             key={'approvedDate'}
