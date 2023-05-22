@@ -25,7 +25,7 @@ export default function DatePickerDefault(props: DatePickerProps) {
           <TextField
             {...params}
             sx={{ ...sx, minWidth: 150 }}
-            className={classes.MTextField}
+            className={classes.MTextFieldDatePicker}
             size={'small'}
             helperText={helperText ? helperText : ''}
             inputProps={{

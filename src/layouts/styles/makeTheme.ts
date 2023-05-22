@@ -126,9 +126,9 @@ const useStyles = makeStyles({
       },
     },
     '& .MuiOutlinedInput-root': {
-      borderRadius: '24px',
-      backgroundColor: '#fff',
-      height: '35px',
+      borderRadius: '12px',
+      backgroundColor: '#fff !important',
+      height: '56px',
       '& fieldset': {
         border: 'var(--primary-border)',
       },
@@ -318,6 +318,32 @@ const useStyles = makeStyles({
     color: 'var(--primary-color) !important',
     width: 175,
     height: 40,
+  },
+
+  MTextFieldDatePicker: {
+    '& .css-md26zr-MuiInputBase-root-MuiOutlinedInput-root': {
+      '& label.Mui-focused': {
+        color: 'green',
+      },
+      '& input': {
+        padding: '16px',
+        color: 'rgba(20, 20, 20, 0.6)',
+      },
+    },
+    '& .MuiOutlinedInput-root': {
+      borderRadius: '24px',
+      backgroundColor: '#fff',
+      height: '35px',
+      '& fieldset': {
+        border: 'var(--primary-border)',
+      },
+      '&:hover fieldset': {
+        border: 'var(--primary-border)',
+      },
+      '&.Mui-focused fieldset': {
+        border: 'var(--primary-border)',
+      },
+    },
   },
 });
 
