@@ -11,10 +11,11 @@ import {
   removeRefreshToken,
   removeAccessToken,
   removeSessionId,
-  removeUserInfo, getUserInfo,
+  removeUserInfo,
+  getUserInfo,
 } from './sessionStore';
 import { getErrorMessage, getErrorMessageHttp } from '../utils/apiException';
-import { getDecodedAccessToken } from "../utils/utils";
+import { getDecodedAccessToken } from '../utils/utils';
 
 const instance = axios.create({
   baseURL: env.keycloak.url,
@@ -30,18 +31,26 @@ export function authentication(payload: loginForm): Promise<Response> {
   const params = new URLSearchParams();
   params.append('username', payload.username);
   params.append('password', payload.password);
-  params.append('grant_type', env.keycloak.grantType);
-  params.append('client_id', env.keycloak.clientId);
+
+  // params.append('grant_type', env.keycloak.grantType);
+  // params.append('client_id', env.keycloak.clientId);
+  const headers = {
+    'Content-Type': 'application/json',
+  };
   return instance
-    .post(env.keycloak.url.authentication, params)
+    .post(env.keycloak.url.authentication, payload, { headers: headers })
     .then(async (response: AxiosResponse) => {
       if (response.status === 200) {
         setAccessToken(response.data.access_token);
-        setRefreshToken(response.data.refresh_token);
         setSessionId(response.data.session_state);
-        let userInfo = getDecodedAccessToken(response.data.access_token ? response.data.access_token : '');
+        let userInfo = getDecodedAccessToken(
+          response.data.access_token ? response.data.access_token : ''
+        );
         //handle access time
-        userInfo = Object.assign(userInfo, _updateAccessTime(response.data.accessExpireSeconds));
+        userInfo = Object.assign(
+          userInfo,
+          _updateAccessTime(response.data.accessExpireSeconds)
+        );
         //handle access time
         setUserInfo(userInfo);
         return response.data;
@@ -73,9 +82,14 @@ export function refreshToken(): Promise<Response> {
         if (response.status === 200) {
           setRefreshToken(response.data.refresh_token);
           setAccessToken(response.data.access_token);
-          let userInfo = getDecodedAccessToken(response.data.access_token ? response.data.access_token : '');
+          let userInfo = getDecodedAccessToken(
+            response.data.access_token ? response.data.access_token : ''
+          );
           //handle access time
-          userInfo = Object.assign(userInfo, _updateAccessTime(response.data.accessExpireSeconds));
+          userInfo = Object.assign(
+            userInfo,
+            _updateAccessTime(response.data.accessExpireSeconds)
+          );
           //handle access time
           setUserInfo(userInfo);
           return response.data;
@@ -123,8 +137,8 @@ function _updateAccessTime(accessExpireSeconds: number) {
   return accessTime;
 }
 
-export function isLogin(){
+export function isLogin() {
   const currentUser = getUserInfo();
-  let nowTime = (new Date()).getTime();
-  return currentUser && currentUser.validTo && (nowTime < currentUser.validTo);
+  let nowTime = new Date().getTime();
+  return currentUser && currentUser.validTo && nowTime < currentUser.validTo;
 }
