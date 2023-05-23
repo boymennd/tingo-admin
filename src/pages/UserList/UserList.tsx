@@ -36,6 +36,8 @@ import { Lock, Edit, Visibility } from '@mui/icons-material';
 import { data } from '../../fakeData/dataStatistic';
 import BtnBorder from '../../components/common/BtnBorder';
 import DatePickerDefault from '../../components/common/DatePicker';
+import { useQuery } from '@tanstack/react-query';
+import { getUserList } from '../../services/access/UserManagement';
 
 export type Employee = {
   firstName: string;
@@ -83,9 +85,9 @@ const FormExample = () => {
     typeTransaction: 'ALL',
   });
   const [currentLocale, setCurrentLocale] = useState(MRT_Localization_EN);
+  const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
   const [pageSize, setPageSize] = useState<number>(5);
-  const [query, setQuery] = useState<string>('');
 
   const globalTheme = useTheme(); //(optional) if you already have a theme defined in your app root, you can import here
 
@@ -131,7 +133,7 @@ const FormExample = () => {
     }
   }, [i18n.language]);
 
-  const [dataTable, setDataTable] = useState<Employee[]>(data);
+  const [dataTable, setDataTable] = useState<Employee[]>([]);
 
   const columns = useMemo<MRT_ColumnDef<Employee>[]>(
     () => [
@@ -277,6 +279,34 @@ const FormExample = () => {
     ],
     [i18n.language]
   );
+
+  const { data, isError, isFetching, isLoading, refetch } = useQuery({
+    queryKey: [
+      'transactionsHistory',
+      page, //refetch when pagination.pageIndex changes
+      pageSize, //refetch when pagination.pageSize changes
+      query,
+    ],
+    queryFn: () => {
+      const controller = new AbortController();
+      setTimeout(() => {
+        controller.abort();
+      }, 5000);
+      return getUserList(query, page + 1, pageSize);
+    },
+    staleTime: 6 * 1000,
+    keepPreviousData: true,
+    // queryKey: ['transactionsHistory', page],
+    // queryFn: () => {
+    //   const controller = new AbortController();
+    //   setTimeout(() => {
+    //     controller.abort();
+    //   }, 5000);
+    //   return getTransactionsHistory(page, limit, controller.signal);
+    // },
+    // keepPreviousData: true,
+    // retry: 0,
+  });
 
   const handleImportFile = (e: any) => {
     const files = e.target.files;
