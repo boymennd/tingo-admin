@@ -17,6 +17,7 @@ import { openLoading } from '../../store/slices/loadingSlice';
 import { setUserInfo } from '../../store/slices/userInfoSlice';
 import { useAppDispatch } from '../../store/store';
 import { objectNullOrEmpty } from '../../utils/utils';
+import { loginForm } from '../../models/userInterface';
 
 const lstLocale = [
   {
@@ -72,21 +73,22 @@ export default function Login() {
     dispatch(openLoading(true));
     try {
       // await dispatch(loginKeyCloakAsync(form));
-      const loginUser = await AuthenticationService.login(
-        data.username,
-        data.password
-      );
+      const payload: loginForm = {
+        username: data.username,
+        password: data.password,
+      };
+      const loginUser = await AuthenticationService.login(payload);
       if (loginUser) {
         const userInfo = {
-          username: loginUser?.username,
-          fullName: loginUser?.fullName,
-          email: loginUser?.email,
-          phone: loginUser?.phone,
-          isLogin: true,
-          permission: loginUser?.permission,
-          role: loginUser?.role,
+          // username: loginUser?.username,
+          // fullName: loginUser?.fullName,
+          // email: loginUser?.email,
+          // phone: loginUser?.phone,
+          // isLogin: true,
+          // permission: loginUser?.permission,
+          // role: loginUser?.role,
         };
-        dispatch(setUserInfo(userInfo));
+        // dispatch(setUserInfo(userInfo));
         setErrorLogin({});
         navigate('/', { replace: true });
       } else {
@@ -107,8 +109,7 @@ export default function Login() {
             item
             xs={6}
             sx={{ display: 'flex', alignItems: 'center' }}
-            pr={4}
-          >
+            pr={4}>
             <Grid container p={2} sx={{ justifyContent: 'center' }}>
               <img src={logo} alt="" style={{ marginBottom: '24px' }} />
               {!objectNullOrEmpty(errorLogin) && !errorLogin.isLogin && (
@@ -137,8 +138,7 @@ export default function Login() {
                 item
                 xs={12}
                 className={classes.MLoginInput}
-                sx={{ position: 'relative' }}
-              >
+                sx={{ position: 'relative' }}>
                 <div className={classes.MInputLabel}>{t('password')}</div>
                 <TextField
                   {...register('password', { required: true })}
@@ -152,8 +152,7 @@ export default function Login() {
                 />
                 <div
                   className={classes.showPassword}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                  onClick={() => setShowPassword(!showPassword)}>
                   <img
                     src={!showPassword ? HidePasswordIcon : ShowPasswordIcon}
                     alt=""
@@ -181,29 +180,25 @@ export default function Login() {
                 xs={12}
                 sx={{
                   marginTop: '28px',
-                }}
-              >
+                }}>
                 <Button
                   className={classes.MButton}
                   variant={'contained'}
-                  type={'submit'}
-                >
+                  type={'submit'}>
                   {t('signIn')}
                 </Button>
               </Grid>
               <Box sx={{ marginTop: '42px' }}>
                 <NavLink
                   to={'/forgot-password'}
-                  style={{ textDecoration: 'none' }}
-                >
+                  style={{ textDecoration: 'none' }}>
                   <Typography
                     fontSize={'small'}
                     sx={{
                       color: 'var(--primary-color)',
                       fontSize: '16px',
                       fontWeight: '700',
-                    }}
-                  >
+                    }}>
                     {t('forgotPassword')}
                   </Typography>
                 </NavLink>
@@ -261,8 +256,7 @@ export default function Login() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '100%',
-              }}
-            >
+              }}>
               <img src={bg_login} width="100%" alt={''} />
             </Box>
           </Grid>
