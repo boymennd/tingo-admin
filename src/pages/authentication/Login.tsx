@@ -99,7 +99,7 @@ export default function Login() {
         data.email,
         data.password
       );
-      
+
       if (loginUser) {
         const userInfo = {
           email: loginUser?.email,
@@ -111,6 +111,7 @@ export default function Login() {
           status: loginUser?.status,
         };
         dispatch(setUserInfo(userInfo));
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
         navigate('/', { replace: true });
       } else {
         setError('loginError', { type: 'required', message: 'Sign_in_Pw_03' });
@@ -130,8 +131,7 @@ export default function Login() {
             item
             xs={6}
             sx={{ display: 'flex', alignItems: 'center' }}
-            pr={4}
-          >
+            pr={4}>
             <Grid container p={2} sx={{ justifyContent: 'center' }}>
               <img src={logo} alt="" style={{ marginBottom: '24px' }} />
 
@@ -142,8 +142,7 @@ export default function Login() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}
-              >
+                }}>
                 {errors.loginError && (
                   <div className={classes.MTextValidate}>
                     <Error fontSize="medium" />
@@ -171,8 +170,7 @@ export default function Login() {
                 item
                 xs={12}
                 className={classes.MLoginInput}
-                sx={{ position: 'relative' }}
-              >
+                sx={{ position: 'relative' }}>
                 <div className={classes.MInputLabel}>{t('password')}</div>
                 <TextField
                   {...register('password', {
@@ -190,8 +188,7 @@ export default function Login() {
                 />
                 <div
                   className={classes.showPassword}
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                  onClick={() => setShowPassword(!showPassword)}>
                   <img
                     src={!showPassword ? HidePasswordIcon : ShowPasswordIcon}
                     alt=""
@@ -203,29 +200,25 @@ export default function Login() {
                 xs={12}
                 sx={{
                   marginTop: '28px',
-                }}
-              >
+                }}>
                 <Button
                   className={classes.MButton}
                   variant={'contained'}
-                  type={'submit'}
-                >
+                  type={'submit'}>
                   {t('signIn')}
                 </Button>
               </Grid>
               <Box sx={{ marginTop: '42px' }}>
                 <NavLink
                   to={'/forgot-password'}
-                  style={{ textDecoration: 'none' }}
-                >
+                  style={{ textDecoration: 'none' }}>
                   <Typography
                     fontSize={'small'}
                     sx={{
                       color: 'var(--primary-color)',
                       fontSize: '16px',
                       fontWeight: '700',
-                    }}
-                  >
+                    }}>
                     {t('forgotPassword')}
                   </Typography>
                 </NavLink>
@@ -283,8 +276,7 @@ export default function Login() {
                 justifyContent: 'center',
                 alignItems: 'center',
                 height: '100%',
-              }}
-            >
+              }}>
               <img src={bg_login} width="100%" alt={''} />
             </Box>
           </Grid>

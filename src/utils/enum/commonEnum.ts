@@ -19,9 +19,14 @@ export enum PREFIX_LOCALE {
   ZH = 'zh',
 }
 
-export enum STATUS {
-  APPROVED = 'approved',
-  UNAPPROVED = 'unapproved',
+export enum USER_STATUS {
+  ACCOUNT_SETUP = 'ACCOUNT_SETUP',
+  WAIT_LIST = 'WAIT_LIST',
+  INCOMPLETE = 'INCOMPLETE',
+  IN_REVIEW = 'IN_REVIEW',
+  ACTIVE = 'ACTIVE',
+  SUSPENDED = 'SUSPENDED',
+  CLOSED = 'CLOSED',
 }
 
 export enum ERROR_CODE {

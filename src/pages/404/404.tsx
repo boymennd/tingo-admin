@@ -12,8 +12,7 @@ export default function Page404() {
         alignItems: 'center',
         fontWeight: 'bold',
         fontSize: '20px',
-      }}
-    >
+      }}>
       404 | The page is not exist
     </Box>
   );

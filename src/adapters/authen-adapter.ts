@@ -5,7 +5,6 @@ import { loginForm, Response, User } from '../models/userInterface';
 import {
   setAccessToken,
   setRefreshToken,
-  setSessionId,
   getRefreshToken,
   setUserInfo,
   removeRefreshToken,
@@ -16,9 +15,9 @@ import {
 } from './sessionStore';
 import { getErrorMessage, getErrorMessageHttp } from '../utils/apiException';
 import { getDecodedAccessToken } from '../utils/utils';
-
+import { environment } from '../enveroment-base';
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: env.backEnd.url,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -31,7 +30,7 @@ export function authentication(payload: loginForm): Promise<User> {
   params.append('username', payload.username);
   params.append('password', payload.password);
   return instance
-    .post('/api/ms-auth/admin/signin', params)
+    .post(environment.signIn.url, params)
     .then(async (response: AxiosResponse) => {
       if (response.status === 200) {
         setAccessToken(response.data.token);

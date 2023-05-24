@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { Grid, Typography } from "@mui/material";
-import { AuthenticationService } from "../../services/access/authenticationService";
-import { Settings } from "@mui/icons-material";
-import UserManageSetting from "./UserManageSetting";
-import { PREFIX_LOCALE, USER_ROLE } from "../../utils/enum/commonEnum";
-import MaterialReactTable, { MRT_Row } from "material-react-table";
-import { stringNullOrEmpty } from "../../utils/utils";
-import i18n from "i18next";
+import React, { useEffect, useState } from 'react';
+import { Grid, Typography } from '@mui/material';
+import { AuthenticationService } from '../../services/access/authenticationService';
+import { Settings } from '@mui/icons-material';
+import UserManageSetting from './UserManageSetting';
+import { PREFIX_LOCALE, USER_ROLE } from '../../utils/enum/commonEnum';
+import MaterialReactTable, { MRT_Row } from 'material-react-table';
+import { stringNullOrEmpty } from '../../utils/utils';
+import i18n from 'i18next';
 
 import { MRT_Localization_EN } from 'material-react-table/locales/en';
-import { MRT_Localization_ZH_HANS } from "material-react-table/locales/zh-Hans";
-import { useTranslation } from "react-i18next";
+import { MRT_Localization_ZH_HANS } from 'material-react-table/locales/zh-Hans';
+import { useTranslation } from 'react-i18next';
 
 const _ = require('lodash');
 
 export default function UserManagementList() {
   const { t } = useTranslation(['userManagement']);
-  const [lstUser] = useState(AuthenticationService.getListUserLocalStorage);
+  const [lstUser] = useState(AuthenticationService.geUserLocalStorage);
   const [userRows, setUserRows] = useState<any[]>([]);
   const [openSettingModal, setOpenSettingModal] = useState(false);
   const [currentUserLocal] = useState(AuthenticationService.getCurrentUser);
@@ -48,27 +48,27 @@ export default function UserManagementList() {
     setOpenSettingModal(false);
   };
 
-  useEffect(() => {
-    if (lstUser && lstUser.length > 0) {
-      let rows: any[] = [];
-      lstUser.map((it: any, index: number) => {
-        if (it.username !== currentUserLocal.username && USER_ROLE.ADMIN !== it.role) {
-          it.id = index;
-          it.index = index + 1;
-          rows.push(it);
-        }
-      });
-      setUserRows(rows);
-    }
-  }, [lstUser]);
+  // useEffect(() => {
+  //   if (lstUser && lstUser.length > 0) {
+  //     let rows: any[] = [];
+  //     lstUser.map((it: any, index: number) => {
+  //       if (it.username !== currentUserLocal.username && USER_ROLE.ADMIN !== it.role) {
+  //         it.id = index;
+  //         it.index = index + 1;
+  //         rows.push(it);
+  //       }
+  //     });
+  //     setUserRows(rows);
+  //   }
+  // }, [lstUser]);
 
   const userColumns: any = [
     {
       accessorKey: 'action',
       header: ' ',
-      Cell: (props: { renderedCellValue: any, row: MRT_Row }) => (
+      Cell: (props: { renderedCellValue: any; row: MRT_Row }) => (
         <>
-          <Settings/>
+          <Settings />
         </>
       ),
     },
@@ -83,12 +83,12 @@ export default function UserManagementList() {
     {
       accessorKey: 'role',
       header: t('role'),
-      Cell: (props: { renderedCellValue: any, row: MRT_Row }) => (
+      Cell: (props: { renderedCellValue: any; row: MRT_Row }) => (
         <div style={{ paddingLeft: '20px' }}>
           <Typography>{genRole(props.renderedCellValue)}</Typography>
         </div>
       ),
-    }
+    },
   ];
 
   const genRole = (role: string) => {
@@ -137,4 +137,4 @@ export default function UserManagementList() {
       />
     </div>
   );
-};
+}
