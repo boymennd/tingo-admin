@@ -31,22 +31,29 @@ const lstLocale = [
   },
 ];
 
+export interface loginData {
+  email: string;
+  password: string;
+}
+
 export default function Login() {
   const classes = useStyles();
   const { t } = useTranslation(['account']);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [errorLogin, setErrorLogin] = useState<any>({});
   const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
     handleSubmit,
+    setError,
+    clearErrors,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      username: '',
+      email: '',
       password: '',
+      loginError: '',
     },
   });
   const [currentLocate, setCurrentLocate] = useState<any>(
@@ -68,34 +75,50 @@ export default function Login() {
     i18n.changeLanguage(e.target.value);
   };
 
-  const onHandleLogin = async (data: any) => {
+  const onHandleLogin = async (data: loginData) => {
+    const regex = new RegExp(
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+    );
+
+    if (data.email === '') {
+      setError('loginError', { type: 'required', message: 'Sign_in_Pw_01' });
+    } else if (data.password === '') {
+      setError('loginError', { type: 'required', message: 'Sign_in_Pw_02' });
+    } else if (
+      !regex.test(data.email) ||
+      data.email.length > 125 ||
+      data.password.length > 50
+    ) {
+      setError('loginError', { type: 'required', message: 'Sign_in_Pw_03' });
+    }
+
     dispatch(openLoading(true));
     try {
       // await dispatch(loginKeyCloakAsync(form));
       const loginUser = await AuthenticationService.login(
-        data.username,
+        data.email,
         data.password
       );
+      
       if (loginUser) {
         const userInfo = {
-          username: loginUser?.username,
-          fullName: loginUser?.fullName,
           email: loginUser?.email,
-          phone: loginUser?.phone,
+          phoneNumber: loginUser?.phoneNumber,
+          userId: loginUser?.userId,
           isLogin: true,
-          permission: loginUser?.permission,
-          role: loginUser?.role,
+          userStatus: loginUser?.userStatus,
+          isEnabled2FA: loginUser?.isEnabled2FA,
+          status: loginUser?.status,
         };
         dispatch(setUserInfo(userInfo));
-        setErrorLogin({});
         navigate('/', { replace: true });
       } else {
-        errorLogin.isLogin = false;
-        setErrorLogin(errorLogin);
+        setError('loginError', { type: 'required', message: 'Sign_in_Pw_03' });
       }
       dispatch(openLoading(false));
     } catch (e) {
       dispatch(openLoading(false));
+      setError('loginError', { type: 'required', message: 'Sign_in_Pw_03' });
     }
   };
 
@@ -111,27 +134,38 @@ export default function Login() {
           >
             <Grid container p={2} sx={{ justifyContent: 'center' }}>
               <img src={logo} alt="" style={{ marginBottom: '24px' }} />
-              {!objectNullOrEmpty(errorLogin) && !errorLogin.isLogin && (
-                <div className={classes.MTextValidate}>
-                  {t('message.loginFail')}
-                </div>
-              )}
+
+              <Grid
+                item
+                xs={12}
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                {errors.loginError && (
+                  <div className={classes.MTextValidate}>
+                    <Error fontSize="medium" />
+                    {t(`${errors?.loginError.message}`)}
+                  </div>
+                )}
+              </Grid>
+
               <Grid item xs={12} className={classes.MLoginInput}>
-                <div className={classes.MInputLabel}>{t('user')}</div>
+                <div className={classes.MInputLabel}>{t('email')}</div>
                 <TextField
-                  {...register('username', { required: true })}
+                  {...register('email', {
+                    onChange: () => {
+                      clearErrors('loginError');
+                    },
+                  })}
                   className={classes.MTextField}
-                  id={'username'}
-                  name={'username'}
+                  id={'email'}
+                  name={'email'}
                   size={'small'}
                   fullWidth
                 />
-                {errors.username && (
-                  <div className={classes.MLoginInput}>
-                    <Error sx={{ fontSize: 'large' }} />
-                    {t('enterUser')}
-                  </div>
-                )}
               </Grid>
               <Grid
                 item
@@ -141,7 +175,11 @@ export default function Login() {
               >
                 <div className={classes.MInputLabel}>{t('password')}</div>
                 <TextField
-                  {...register('password', { required: true })}
+                  {...register('password', {
+                    onChange: () => {
+                      clearErrors('loginError');
+                    },
+                  })}
                   className={classes.MTextField}
                   id={'password'}
                   name={'password'}
@@ -159,22 +197,6 @@ export default function Login() {
                     alt=""
                   />
                 </div>
-                {errors.password && (
-                  <div className={classes.MTextValidate}>
-                    <Error sx={{ fontSize: 'large' }} />
-                    {t('enterPassword')}
-                  </div>
-                )}
-                {/* <Box sx={{ float: 'right' }}>
-									<NavLink
-										to={'/forgot-password'}
-										style={{ textDecoration: 'none' }}
-									>
-										<Typography fontSize={'small'}>
-											{t('forgotPassword')}
-										</Typography>
-									</NavLink>
-								</Box> */}
               </Grid>
               <Grid
                 item

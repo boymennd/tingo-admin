@@ -214,7 +214,7 @@ export default function Layout({ children }: Props) {
     if (objectNullOrEmpty(currentUser)) {
       return '';
     }
-    return currentUser.fullName;
+    return currentUser;
   };
 
   const onChangeLanguage = (value: string) => {
@@ -355,7 +355,7 @@ export default function Layout({ children }: Props) {
               <MenuItem>
                 {t('hi')}&nbsp;
                 <Typography>
-                  <b>{genCurrentUserName()}</b>
+                  <b>{'Test'}</b>
                 </Typography>
               </MenuItem>
               <Divider />
