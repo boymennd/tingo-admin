@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { PREFIX_LOCALE, STATUS } from '../../utils/enum/commonEnum';
+import { PREFIX_LOCALE, USER_STATUS } from '../../utils/enum/commonEnum';
 import { stringNullOrEmpty } from '../../utils/utils';
 import i18n from 'i18next';
 import { utils, writeFile, read } from 'xlsx';
@@ -38,30 +38,29 @@ import BtnBorder from '../../components/common/BtnBorder';
 import DatePickerDefault from '../../components/common/DatePicker';
 import { useQuery } from '@tanstack/react-query';
 import { getUserList } from '../../services/access/UserManagement';
+import UserStatus from '../../components/common/UserStatus';
 
 export type Employee = {
-  firstName: string;
-  lastName: string;
+  fullName: string;
+  middleName: string;
+  surName: string;
+  givenName: string;
   gender: string;
   email: string;
   status: string;
   accountId: string;
-  registerDate: string;
+  registrationDate: string;
   residentCountry: string;
   phoneNumber: string;
   approvedDate?: string;
   avatar: string;
-  dateOfBirth: string;
+  dob: string;
+  lastUpdate: number;
 };
 
 type DataDetailbyTitleProps = {
   title: string;
-  data: string;
-};
-
-type RowStatusValueProps = {
-  styleCustom: any;
-  statusLabel: string;
+  data: string | null;
 };
 
 interface ValuesType {
@@ -133,14 +132,12 @@ const FormExample = () => {
     }
   }, [i18n.language]);
 
-  const [dataTable, setDataTable] = useState<Employee[]>([]);
-
   const columns = useMemo<MRT_ColumnDef<Employee>[]>(
     () => [
       {
-        accessorFn: (row) => `${row.firstName} ${row.lastName}`,
-        id: 'name',
+        accessorKey: 'fullName',
         header: t('name'),
+
         flex: 2.5,
         Cell: ({ renderedCellValue, row }) => (
           <Box
@@ -152,11 +149,12 @@ const FormExample = () => {
             <img
               alt="avatar"
               height={32}
-              src={row.original.avatar}
+              // src={row.original.avatar}
+              src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/639.jpg"
               loading="lazy"
               style={{ borderRadius: '50%' }}
             />
-            <span>{renderedCellValue}</span>
+            <span>{row.original.fullName}</span>
           </Box>
         ),
       },
@@ -168,8 +166,8 @@ const FormExample = () => {
 
       {
         Cell: ({ cell }) => cell.getValue<Date>()?.toLocaleDateString(),
-        accessorFn: (row) => new Date(row.registerDate),
-        id: 'registerDate',
+        accessorFn: (row) => new Date(row.registrationDate),
+        id: 'registrationDate',
         header: t('registerDate'),
         filterFn: 'equals',
         sortingFn: 'datetime',
@@ -181,7 +179,7 @@ const FormExample = () => {
             placeholder={'dfasdf'}
             sx={{ minWidth: 150 }}
             value={!!column.getFilterValue() ? column.getFilterValue() : null}
-            key={'registerDate'}
+            key={'registrationDate'}
           />
         ),
         size: 150,
@@ -204,8 +202,8 @@ const FormExample = () => {
       },
       {
         Cell: ({ cell }) => cell.getValue<Date>()?.toLocaleDateString(),
-        accessorFn: (row) => new Date(row.dateOfBirth),
-        id: 'dateOfBirth',
+        accessorFn: (row) => new Date(row.dob),
+        id: 'dob',
         header: t('dateOfBirth'),
         filterFn: 'equals',
         sortingFn: 'datetime',
@@ -256,11 +254,18 @@ const FormExample = () => {
         accessorKey: 'status',
         enablePinning: true,
         header: t('status'),
-        Cell: ({ renderedCellValue }) => geRowStatus(renderedCellValue),
+        Cell: ({ renderedCellValue }) => (
+          <UserStatus status={renderedCellValue} />
+        ),
         size: 200,
         filterSelectOptions: [
-          { text: 'Approved', value: 'approved' },
-          { text: 'Unapproved', value: 'unapproved' },
+          { text: 'Account setup', value: USER_STATUS.ACCOUNT_SETUP },
+          { text: 'Wait list', value: USER_STATUS.WAIT_LIST },
+          { text: 'incomplete', value: USER_STATUS.INCOMPLETE },
+          { text: 'In review', value: USER_STATUS.IN_REVIEW },
+          { text: 'Active', value: USER_STATUS.ACTIVE },
+          { text: 'Suspended', value: USER_STATUS.SUSPENDED },
+          { text: 'Closed', value: USER_STATUS.CLOSED },
         ],
         filterVariant: 'select',
         muiTableHeadCellFilterTextFieldProps: { placeholder: 'Select status' },
@@ -282,30 +287,16 @@ const FormExample = () => {
 
   const { data, isError, isFetching, isLoading, refetch } = useQuery({
     queryKey: [
-      'transactionsHistory',
+      'getUserList',
       page, //refetch when pagination.pageIndex changes
       pageSize, //refetch when pagination.pageSize changes
       query,
     ],
     queryFn: () => {
-      const controller = new AbortController();
-      setTimeout(() => {
-        controller.abort();
-      }, 5000);
-      return getUserList(query, page + 1, pageSize);
+      return getUserList(query, page, pageSize);
     },
     staleTime: 6 * 1000,
     keepPreviousData: true,
-    // queryKey: ['transactionsHistory', page],
-    // queryFn: () => {
-    //   const controller = new AbortController();
-    //   setTimeout(() => {
-    //     controller.abort();
-    //   }, 5000);
-    //   return getTransactionsHistory(page, limit, controller.signal);
-    // },
-    // keepPreviousData: true,
-    // retry: 0,
   });
 
   const handleImportFile = (e: any) => {
@@ -326,7 +317,7 @@ const FormExample = () => {
           raw: true,
           rawNumbers: true,
         });
-        setDataTable(data);
+        // setDataTable(data);
 
         /* Update state */
       };
@@ -352,50 +343,9 @@ const FormExample = () => {
     writeFile(wb, 'Example.xlsx');
   };
 
-  const geRowStatus = (status: any) => {
-    let statusDisplay;
-
-    switch (status) {
-      case STATUS.APPROVED:
-        statusDisplay = (
-          <RowStatusValue
-            statusLabel="Approved"
-            styleCustom={{
-              color: 'var(--status-approve-color)',
-              backgroundColor: 'var(--status-approve-bg-color)',
-              width: '102px',
-            }}
-          />
-        );
-        break;
-      case STATUS.UNAPPROVED:
-        statusDisplay = (
-          <RowStatusValue
-            statusLabel="Unapproved"
-            styleCustom={{
-              color: 'var(--status-reject-color)',
-              backgroundColor: 'var(--status-reject-bg-color)',
-              width: '120px',
-            }}
-          />
-        );
-        break;
-    }
-    return statusDisplay;
-  };
-
-  const RowStatusValue = ({
-    statusLabel,
-    styleCustom,
-  }: RowStatusValueProps) => {
-    return (
-      <Typography
-        className={classes.MLabelStatus}
-        sx={styleCustom}
-        fontWeight={600}>
-        {statusLabel}
-      </Typography>
-    );
+  const handleAddNewUser = async () => {
+    // const rs = await getUserList(query, page, pageSize);
+    // console.log({ rs });
   };
 
   const DataDetailByTitle = ({ title, data }: DataDetailbyTitleProps) => {
@@ -430,36 +380,49 @@ const FormExample = () => {
           <img
             alt="avatar"
             height={60}
-            src={data.avatar}
+            // src={data.avatar}
+            src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/639.jpg"
             loading="lazy"
             style={{ borderRadius: '50%' }}
           />
-          <Typography
-            fontSize={'20px'}
-            fontWeight={700}>{`${data.firstName} ${data.lastName}`}</Typography>
-          {geRowStatus(data.status)}{' '}
+          <Typography fontSize={'20px'} fontWeight={700}>
+            {data.fullName}
+          </Typography>
+          <UserStatus status={data.status} />{' '}
         </Grid>
 
         <Grid item xs={3} sx={{ textAlign: 'left', width: 280 }}>
           <DataDetailByTitle title="Account ID" data={data.accountId} />
           <DataDetailByTitle
             title="Approved Date"
-            data={data.approvedDate || ''}
+            data={data.approvedDate || '___'}
           />
           <DataDetailByTitle
             title="Resident Country"
-            data={data.residentCountry}
+            data={data.residentCountry || '___'}
           />
         </Grid>
         <Grid item xs={3} sx={{ textAlign: 'left', width: 280 }}>
-          <DataDetailByTitle title="Registration Date" data={data.accountId} />
-          <DataDetailByTitle title="Date of Birth" data={data.dateOfBirth} />
-          <DataDetailByTitle title="Phone Number" data={data.phoneNumber} />
+          <DataDetailByTitle
+            title="Registration Date"
+            data={new Date(data.registrationDate).toLocaleDateString() || '___'}
+          />
+          <DataDetailByTitle
+            title="Date of Birth"
+            data={new Date(data.dob).toLocaleDateString() || '___'}
+          />
+          <DataDetailByTitle
+            title="Phone Number"
+            data={data.phoneNumber || '___'}
+          />
         </Grid>
         <Grid item xs={3} sx={{ textAlign: 'left', width: 280 }}>
-          <DataDetailByTitle title="Late Update" data={'04/24/2023'} />
-          <DataDetailByTitle title="Gender" data={data.gender} />
-          <DataDetailByTitle title="Email" data={data.email} />
+          <DataDetailByTitle
+            title="Late Update"
+            data={new Date(data.lastUpdate).toLocaleDateString() || '___'}
+          />
+          <DataDetailByTitle title="Gender" data={data.gender || '___'} />
+          <DataDetailByTitle title="Email" data={data.email || '___'} />
         </Grid>
       </Grid>
     );
@@ -477,7 +440,7 @@ const FormExample = () => {
           <MaterialReactTable
             localization={currentLocale}
             columns={columns}
-            data={dataTable}
+            data={!!data && data.userInfoDtos ? data.userInfoDtos : []}
             manualPagination
             enableRowActions
             enableRowSelection
@@ -582,7 +545,8 @@ const FormExample = () => {
                     className={classes.MBtnContained}
                     sx={{ textTransform: 'none' }}
                     color="success"
-                    variant="contained">
+                    variant="contained"
+                    onClick={handleAddNewUser}>
                     <AddIcon />
                     <Typography ml={1} fontWeight={600}>
                       {t('btnAddNewuser')}
@@ -661,7 +625,7 @@ const FormExample = () => {
                 pageSize={pageSize}
                 setPage={setPage}
                 setPageSize={setPageSize}
-                total={dataTable.length || 0}
+                total={!!data && data.total ? data.total : 0}
               />
             )}
           />

@@ -8,7 +8,6 @@ import {
 import { useState } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
-import { onChange } from '../../utils/utils';
 
 interface Props {
   localStorageKey: string;
@@ -16,11 +15,13 @@ interface Props {
 }
 
 const InputSuggestion = ({ localStorageKey, setQuery }: Props) => {
+  const [value, setValue] = useState<string>('');
   const [showHistorySearch, setShowHistorySearch] = useState<boolean>(false);
+  const listHistoryLocal = localStorage.getItem(localStorageKey)
+    ? JSON.parse(localStorage.getItem(localStorageKey) || '')
+    : [];
   const [listHistorySearch, setListHistorySearch] = useState<any>(
-    localStorage.getItem(localStorageKey)
-      ? JSON.parse(localStorage.getItem(localStorageKey) || '')
-      : []
+    listHistoryLocal.length > 5 ? listHistoryLocal.slice(-5) : listHistoryLocal
   );
   const handleShowHistorySearch = () => {
     if (listHistorySearch.length) {
@@ -32,17 +33,31 @@ const InputSuggestion = ({ localStorageKey, setQuery }: Props) => {
     setShowHistorySearch(false);
   };
 
+  const handleChangeValue = (e: any) => {
+    setValue(e.target.value);
+  };
+
+  const handleChangeQuery = (item: string) => {
+    setQuery(item);
+    setValue(item);
+  };
+
   const handleChangeSearch = (e: any) => {
-    if (
-      e.key === 'Enter' &&
-      e.target.value &&
-      !listHistorySearch.includes(e.target.value)
-    ) {
-      let newList = [...listHistorySearch, e.target.value];
-      setListHistorySearch(newList);
-      localStorage.setItem(localStorageKey, JSON.stringify(newList));
-      setQuery(e.target.value);
-      setShowHistorySearch(false);
+    if (e.key === 'Enter') {
+      if (
+        e.target.value.trim() != '' &&
+        !listHistorySearch.includes(e.target.value)
+      ) {
+        let newList = [...listHistorySearch, e.target.value];
+        setListHistorySearch(newList);
+        localStorage.setItem(localStorageKey, JSON.stringify(newList));
+
+        setShowHistorySearch(false);
+        setQuery(e.target.value);
+      } else {
+        setQuery(e.target.value.trim());
+        setShowHistorySearch(false);
+      }
     }
   };
 
@@ -63,6 +78,8 @@ const InputSuggestion = ({ localStorageKey, setQuery }: Props) => {
         id="query"
         name="query"
         type="search"
+        value={value}
+        onChange={(e) => handleChangeValue(e)}
         onKeyDown={handleChangeSearch}
         onFocus={handleShowHistorySearch}
         onBlur={handleHideHistorySearch}
@@ -127,7 +144,11 @@ const InputSuggestion = ({ localStorageKey, setQuery }: Props) => {
             }}
             display={'flex'}
             justifyContent={'space-between'}>
-            <Typography>{item}</Typography>
+            <Typography
+              onMouseDown={() => handleChangeQuery(item)}
+              sx={{ cursor: 'pointer', width: 360 }}>
+              {item}
+            </Typography>
             <Typography
               onMouseDown={() => handleRemoveSearchHistory(item)}
               sx={{ cursor: 'pointer' }}>

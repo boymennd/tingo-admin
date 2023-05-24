@@ -7,19 +7,19 @@ import { setUserInfo } from './store/slices/userInfoSlice';
 import { useAppDispatch } from './store/store';
 
 function App() {
-	const userInfo = AuthenticationService.getCurrentUser();
-	const { isLogin } = userInfo;
+  const userInfo = AuthenticationService.geUserLocalStorage();
+  const isLogin = AuthenticationService.isLogin();
 
-	const dispatch = useAppDispatch();
-	if (userInfo?.isLogin) {
-		dispatch(setUserInfo(userInfo));
-	}
+  const dispatch = useAppDispatch();
+  if (userInfo?.isLogin) {
+    dispatch(setUserInfo(userInfo));
+  }
 
-	return (
-		<Suspense fallback={isLogin ? <Layout /> : ''}>
-			<ContainerRouter />
-		</Suspense>
-	);
+  return (
+    <Suspense fallback={isLogin ? <Layout /> : ''}>
+      <ContainerRouter />
+    </Suspense>
+  );
 }
 
 export default App;

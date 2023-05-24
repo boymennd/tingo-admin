@@ -4,13 +4,11 @@ import { useEffect } from 'react';
 import RolePermissionPage from './RolePermissionPage';
 import { privateRoutes, publicRoutes } from './routes';
 import Layout from '../layouts/Layout';
-import { useAppSelector } from '../store/store';
 
 const ContainerRouter = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { userInfo } = useAppSelector((state) => state.userInfo);
-  const { isLogin } = userInfo;
+  const isLogin = AuthenticationService.isLogin();
   const activeRoutes = isLogin ? privateRoutes : publicRoutes;
 
   useEffect(() => {

@@ -5,7 +5,6 @@ import { loginForm, Response, User } from '../models/userInterface';
 import {
   setAccessToken,
   setRefreshToken,
-  setSessionId,
   getRefreshToken,
   setUserInfo,
   removeRefreshToken,
@@ -16,9 +15,9 @@ import {
 } from './sessionStore';
 import { getErrorMessage, getErrorMessageHttp } from '../utils/apiException';
 import { getDecodedAccessToken } from '../utils/utils';
-
+import { environment } from '../enveroment-base';
 const instance = axios.create({
-  baseURL: process.env.REACT_APP_API_URL,
+  baseURL: env.backEnd.url,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -30,28 +29,11 @@ export function authentication(payload: loginForm): Promise<User> {
   const params = new FormData();
   params.append('username', payload.username);
   params.append('password', payload.password);
-
-  // params.append('grant_type', env.keycloak.grantType);
-  // params.append('client_id', env.keycloak.clientId);
-  const headers = {
-    'Content-Type': 'application/json',
-  };
   return instance
-    .post(env.keycloak.url.authentication, payload, { headers: headers })
+    .post(environment.signIn.url, params)
     .then(async (response: AxiosResponse) => {
       if (response.status === 200) {
-        setAccessToken(response.data.access_token);
-        setSessionId(response.data.session_state);
-        let userInfo = getDecodedAccessToken(
-          response.data.access_token ? response.data.access_token : ''
-        );
-        //handle access time
-        userInfo = Object.assign(
-          userInfo,
-          _updateAccessTime(response.data.accessExpireSeconds)
-        );
-        //handle access time
-        setUserInfo(userInfo);
+        setAccessToken(response.data.token);
         return response.data;
       }
 

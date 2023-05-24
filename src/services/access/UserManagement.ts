@@ -9,7 +9,7 @@ export async function getUserList(
 ) {
   try {
     const response = await get(
-      `${env.backEnd.url}${environment.userManagement.userList.url}?keyword=${keyword}&page=${page}$size=${pageSize}`
+      `${env.backEnd.url}${environment.userManagement.userList.url}?keyword=${keyword}&page=${page}&size=${pageSize}`
     );
     return response;
   } catch (error) {

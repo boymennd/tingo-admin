@@ -1,8 +1,6 @@
-import { objectNullOrEmpty, stringNullOrEmpty } from '../../utils/utils';
-import { User, loginForm } from '../../models/userInterface';
-import lstUserJSON from '../../fakeData/user.json';
+import { objectNullOrEmpty } from '../../utils/utils';
 import { authentication } from '../../adapters/authen-adapter';
-import { removeAccessToken } from '../../adapters/sessionStore';
+import { getAccessToken, removeAccessToken } from '../../adapters/sessionStore';
 
 //use isLogin set login status in order to use list user in local storage (in demo project)
 
@@ -11,13 +9,13 @@ export const AuthenticationService = {
   login,
   logout,
   getCurrentUser,
-  getListUserLocalStorage,
+  geUserLocalStorage,
 };
 
-function getListUserLocalStorage() {
-  const lstUser: string | null = localStorage.getItem('lstUser');
-  if (lstUser) {
-    return JSON.parse(lstUser);
+function geUserLocalStorage() {
+  const userInfo: string | null = localStorage.getItem('userInfo');
+  if (userInfo) {
+    return JSON.parse(userInfo);
   }
   return [];
 }
@@ -31,52 +29,22 @@ function getCurrentUser() {
 }
 
 async function login(username: string, password: string) {
-  const lstUser: any = localStorage.getItem('lstUser');
-  const lstUserDefault = lstUserJSON.map((user: any) => {
-    return user;
-  });
-  const lstUserCheck = !stringNullOrEmpty(lstUser)
-    ? JSON.parse(lstUser)
-    : lstUserDefault;
   // handle call api authentication
   const loginData = await authentication({
     username: username,
     password: password,
   });
-  console.log({ loginData });
 
   if (!objectNullOrEmpty(loginData)) {
-    // save token to localStorage
-    console.log({ loginData });
-
-    // if (!lstUser) {
-    //   localStorage.setItem('lstUser', JSON.stringify(lstUserDefault));
-    // }
-    // //save list user to local storage
     return loginData;
   }
 }
 
 function logout() {
-  const currentUser = getCurrentUser();
   removeAccessToken();
-  if (objectNullOrEmpty(currentUser)) {
-    return;
-  }
-  currentUser.isLogin = false;
-  localStorage.setItem('currentUser', JSON.stringify(currentUser));
-  // localStorage.removeItem('currentUser');
 }
 
 function isLogin() {
-  const currentUser = getCurrentUser();
-  if (!objectNullOrEmpty(currentUser)) {
-    let nowTime = new Date().getTime();
-    return (
-      currentUser.accessToken &&
-      nowTime < currentUser.validTo &&
-      currentUser.isLogin
-    );
-  }
-  return false;
+  const access_token = getAccessToken();
+  return !!access_token;
 }

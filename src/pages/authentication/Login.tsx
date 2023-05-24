@@ -17,7 +17,6 @@ import { openLoading } from '../../store/slices/loadingSlice';
 import { setUserInfo } from '../../store/slices/userInfoSlice';
 import { useAppDispatch } from '../../store/store';
 import { objectNullOrEmpty } from '../../utils/utils';
-import { loginForm } from '../../models/userInterface';
 
 const lstLocale = [
   {
@@ -112,6 +111,7 @@ export default function Login() {
           status: loginUser?.status,
         };
         dispatch(setUserInfo(userInfo));
+        localStorage.setItem('userInfo', JSON.stringify(userInfo));
         navigate('/', { replace: true });
       } else {
         setError('loginError', { type: 'required', message: 'Sign_in_Pw_03' });
