@@ -15,14 +15,14 @@ export type loginForm = {
 };
 
 export interface User {
-  username: string;
-  password: string;
-  fullName: string;
+  status: boolean;
+  message: number;
+  phoneNumber: number;
   email: string;
-  phone: string;
-  role: string;
-  accessToken: string;
-  validTo: number;
+  token: string;
+  userId: string;
+  userStatus: string;
+  isEnabled2FA: boolean;
 }
 
 export interface UserAccount {
@@ -43,6 +43,3 @@ export interface UserPassword {
   newPassword: string;
   confirmPassword: string;
 }
-
-
-
