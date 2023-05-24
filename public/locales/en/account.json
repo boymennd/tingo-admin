@@ -28,7 +28,11 @@
 	"enterRole": "Enter role",
 	"enterPhone": "Enter phone",
 	"enterCode": "Enter code",
+	"wrongEmail": "Email wrong",
 	"sentVerifyCode": "Verification code has been sent to ",
+	"Sign_in_Pw_01": "Please fill in your email",
+	"Sign_in_Pw_02": "Please fill in your password",
+	"Sign_in_Pw_03": "Your email/ password is invalid. Please try again",
 	"message": {
 		"loginFail": "Your username and/or password are incorrect.",
 		"invalidEmail": "Please provide a valid email address.",

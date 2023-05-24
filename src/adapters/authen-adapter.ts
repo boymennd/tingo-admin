@@ -1,7 +1,7 @@
 import { env } from './environmentConfigs';
 import axios, { AxiosResponse } from 'axios';
 
-import { loginForm, Response } from '../models/userInterface';
+import { loginForm, Response, User } from '../models/userInterface';
 import {
   setAccessToken,
   setRefreshToken,
@@ -18,17 +18,16 @@ import { getErrorMessage, getErrorMessageHttp } from '../utils/apiException';
 import { getDecodedAccessToken } from '../utils/utils';
 
 const instance = axios.create({
-  baseURL: env.keycloak.url,
-  timeout: env.keycloak.timeout,
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
   },
 });
 let action = '';
 
-export function authentication(payload: loginForm): Promise<Response> {
+export function authentication(payload: loginForm): Promise<User> {
   action = 'authentication';
-  const params = new URLSearchParams();
+  const params = new FormData();
   params.append('username', payload.username);
   params.append('password', payload.password);
 

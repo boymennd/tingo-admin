@@ -11,5 +11,6 @@
   "manager": "Manager",
   "saveSuccess": "Save successfully!",
   "save": "Save",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "email": "Email"
 }

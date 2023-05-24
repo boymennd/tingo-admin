@@ -33,9 +33,7 @@ export function UserAccount() {
     if (objectNullOrEmpty(currentUser)) {
       return;
     }
-    currentUser.fullName = data.fullName;
     currentUser.email = data.email;
-    currentUser.role = data.role;
     localStorage.setItem('currentUser', JSON.stringify(currentUser));
     setOpenPopupModal(true);
   }

@@ -2,6 +2,7 @@ import { objectNullOrEmpty, stringNullOrEmpty } from '../../utils/utils';
 import { User, loginForm } from '../../models/userInterface';
 import lstUserJSON from '../../fakeData/user.json';
 import { authentication } from '../../adapters/authen-adapter';
+import { removeAccessToken } from '../../adapters/sessionStore';
 
 //use isLogin set login status in order to use list user in local storage (in demo project)
 
@@ -29,39 +30,36 @@ function getCurrentUser() {
   return {};
 }
 
-async function login(payload: loginForm) {
-  try {
-    const response = await authentication(payload);
-    return response;
-  } catch (error) {
-    throw error;
+async function login(username: string, password: string) {
+  const lstUser: any = localStorage.getItem('lstUser');
+  const lstUserDefault = lstUserJSON.map((user: any) => {
+    return user;
+  });
+  const lstUserCheck = !stringNullOrEmpty(lstUser)
+    ? JSON.parse(lstUser)
+    : lstUserDefault;
+  // handle call api authentication
+  const loginData = await authentication({
+    username: username,
+    password: password,
+  });
+  console.log({ loginData });
+
+  if (!objectNullOrEmpty(loginData)) {
+    // save token to localStorage
+    console.log({ loginData });
+
+    // if (!lstUser) {
+    //   localStorage.setItem('lstUser', JSON.stringify(lstUserDefault));
+    // }
+    // //save list user to local storage
+    return loginData;
   }
-  // const lstUser: any = localStorage.getItem('lstUser');
-  // const lstUserDefault = lstUserJSON.map((user: any) => {
-  // 	return user;
-  // });
-  // const lstUserCheck = !stringNullOrEmpty(lstUser)
-  // 	? JSON.parse(lstUser)
-  // 	: lstUserDefault;
-  // // handle call api authentication
-  // const currentUser: any = lstUserCheck.find(
-  // 	(it: User) => it.username === username && it.password === password
-  // );
-  // if (!objectNullOrEmpty(currentUser)) {
-  // 	// save token to localStorage
-  // 	currentUser.validTo = new Date().getTime() + 1000 * 900;
-  // 	currentUser.isLogin = true;
-  // 	localStorage.setItem('currentUser', JSON.stringify(currentUser));
-  // 	// if (!lstUser) {
-  // 	//   localStorage.setItem('lstUser', JSON.stringify(lstUserDefault));
-  // 	// }
-  // 	// //save list user to local storage
-  // 	return currentUser;
-  // }
 }
 
 function logout() {
   const currentUser = getCurrentUser();
+  removeAccessToken();
   if (objectNullOrEmpty(currentUser)) {
     return;
   }
