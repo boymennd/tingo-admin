@@ -140,7 +140,10 @@ const InputSuggestion = ({ localStorageKey, setQuery }: Props) => {
               display: 'flex',
               justifyContent: 'space-between',
               borderTop: '1px solid rgba(0, 0, 0, 0.05)',
-              padding: '4px 0px 0px',
+              padding: '4px 0px 0px 2px',
+              ':hover': {
+                backgroundColor: 'var(--bg-primary-color)',
+              },
             }}
             display={'flex'}
             justifyContent={'space-between'}>

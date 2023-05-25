@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { PREFIX_LOCALE, USER_STATUS } from '../../utils/enum/commonEnum';
-import { stringNullOrEmpty } from '../../utils/utils';
+import { convertDate, stringNullOrEmpty } from '../../utils/utils';
 import i18n from 'i18next';
 import { utils, writeFile, read } from 'xlsx';
 import { ThemeProvider, useTheme } from '@emotion/react';
@@ -32,57 +32,18 @@ import {
 } from '@mui/material';
 import { Lock, Edit, Visibility } from '@mui/icons-material';
 
-//Mock Data
-import { data } from '../../fakeData/dataStatistic';
+//common and model import
 import BtnBorder from '../../components/common/BtnBorder';
 import DatePickerDefault from '../../components/common/DatePicker';
 import { useQuery } from '@tanstack/react-query';
 import { getUserList } from '../../services/access/UserManagement';
 import UserStatus from '../../components/common/UserStatus';
-
-export type Employee = {
-  fullName: string;
-  middleName: string;
-  surName: string;
-  givenName: string;
-  gender: string;
-  email: string;
-  status: string;
-  accountId: string;
-  registrationDate: string;
-  residentCountry: string;
-  phoneNumber: string;
-  approvedDate?: string;
-  avatar: string;
-  dob: string;
-  lastUpdate: number;
-};
-
-type DataDetailbyTitleProps = {
-  title: string;
-  data: string | null;
-};
-
-interface ValuesType {
-  query: string;
-  dateFrom: any;
-  dateTo: any;
-  minTransactionAmount: number | null;
-  maxTransactionAmount: number | null;
-  typeTransaction: string;
-}
+import { StyleTable } from './TableUserStyle';
+import { DataDetailbyTitleProps, Employee } from '../../models/UserManagement';
 
 const FormExample = () => {
   const classes = useStyles();
   const { t } = useTranslation(['formExample']);
-  const [values, setValues] = useState<ValuesType>({
-    query: '',
-    dateFrom: null,
-    dateTo: null,
-    minTransactionAmount: null,
-    maxTransactionAmount: null,
-    typeTransaction: 'ALL',
-  });
   const [currentLocale, setCurrentLocale] = useState(MRT_Localization_EN);
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(0);
@@ -91,31 +52,11 @@ const FormExample = () => {
   const globalTheme = useTheme(); //(optional) if you already have a theme defined in your app root, you can import here
 
   const tableTheme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          primary: {
-            main: '#F05822',
-          }, //swap in the secondary color as the primary for the table
-        },
-        components: {
-          MuiSwitch: {
-            styleOverrides: {
-              thumb: {
-                boxShadow: 'none',
-                width: 16,
-                height: 16,
-                margin: 2,
-              },
-              track: {
-                borderRadius: 22 / 2,
-              },
-            },
-          },
-        },
-      }),
+    () => createTheme(StyleTable.themeTable),
     [globalTheme]
   );
+
+  // Check render language when change language
 
   useEffect(() => {
     if (!stringNullOrEmpty(i18n.language)) {
@@ -131,6 +72,8 @@ const FormExample = () => {
       }
     }
   }, [i18n.language]);
+
+  // Set columns table
 
   const columns = useMemo<MRT_ColumnDef<Employee>[]>(
     () => [
@@ -165,7 +108,7 @@ const FormExample = () => {
       },
 
       {
-        Cell: ({ cell }) => cell.getValue<Date>()?.toLocaleDateString(),
+        Cell: ({ cell }) => convertDate(cell.row.original.registrationDate),
         accessorFn: (row) => new Date(row.registrationDate),
         id: 'registrationDate',
         header: t('registerDate'),
@@ -201,21 +144,18 @@ const FormExample = () => {
         size: 150,
       },
       {
-        Cell: ({ cell }) => cell.getValue<Date>()?.toLocaleDateString(),
+        Cell: ({ cell }) => convertDate(cell.row.original.dob),
         accessorFn: (row) => new Date(row.dob),
         id: 'dob',
         header: t('dateOfBirth'),
         filterFn: 'equals',
         sortingFn: 'datetime',
-
         size: 150,
-
         Filter: ({ column }) => (
           <DatePickerDefault
             handleOnChange={(newValue) => {
               column.setFilterValue(newValue);
             }}
-            placeholder={'dfasdf'}
             sx={{ minWidth: 150 }}
             value={!!column.getFilterValue() ? column.getFilterValue() : null}
             key={'dateOfBirth'}
@@ -230,7 +170,7 @@ const FormExample = () => {
       },
 
       {
-        Cell: ({ cell }) => cell.getValue<Date>()?.toLocaleDateString(),
+        Cell: ({ cell }) => convertDate(cell.row.original.approvedDate),
         accessorFn: (row) =>
           row.approvedDate ? new Date(row.approvedDate) : null,
         id: 'approvedDate',
@@ -285,6 +225,8 @@ const FormExample = () => {
     [i18n.language]
   );
 
+  // Query data user
+
   const { data, isError, isFetching, isLoading, refetch } = useQuery({
     queryKey: [
       'getUserList',
@@ -298,6 +240,8 @@ const FormExample = () => {
     staleTime: 6 * 1000,
     keepPreviousData: true,
   });
+
+  // Import file
 
   const handleImportFile = (e: any) => {
     const files = e.target.files;
@@ -326,6 +270,8 @@ const FormExample = () => {
     }
   };
 
+  // Export file
+
   const handleExportFile = (table: any) => {
     if (!table.getIsSomeRowsSelected()) return;
     let dataExport = table.getSelectedRowModel().flatRows.map((row: any) => {
@@ -347,6 +293,8 @@ const FormExample = () => {
     // const rs = await getUserList(query, page, pageSize);
     // console.log({ rs });
   };
+
+  // Render Detail User when click show detail
 
   const DataDetailByTitle = ({ title, data }: DataDetailbyTitleProps) => {
     return (
@@ -395,21 +343,21 @@ const FormExample = () => {
           <DataDetailByTitle title="Account ID" data={data.accountId} />
           <DataDetailByTitle
             title="Approved Date"
-            data={data.approvedDate || '___'}
+            data={convertDate(data.approvedDate) || '___'}
           />
           <DataDetailByTitle
             title="Resident Country"
-            data={data.residentCountry || '___'}
+            data={convertDate(data.residentCountry) || '___'}
           />
         </Grid>
         <Grid item xs={3} sx={{ textAlign: 'left', width: 280 }}>
           <DataDetailByTitle
             title="Registration Date"
-            data={new Date(data.registrationDate).toLocaleDateString() || '___'}
+            data={convertDate(data.registrationDate) || '___'}
           />
           <DataDetailByTitle
             title="Date of Birth"
-            data={new Date(data.dob).toLocaleDateString() || '___'}
+            data={convertDate(data.dob) || '___'}
           />
           <DataDetailByTitle
             title="Phone Number"
@@ -419,7 +367,7 @@ const FormExample = () => {
         <Grid item xs={3} sx={{ textAlign: 'left', width: 280 }}>
           <DataDetailByTitle
             title="Late Update"
-            data={new Date(data.lastUpdate).toLocaleDateString() || '___'}
+            data={convertDate(data.lastUpdate) || '___'}
           />
           <DataDetailByTitle title="Gender" data={data.gender || '___'} />
           <DataDetailByTitle title="Email" data={data.email || '___'} />
@@ -450,77 +398,13 @@ const FormExample = () => {
               placeholder: 'Search',
               variant: 'outlined',
               sx: {
-                '& .css-jmhdjf-MuiInputBase-root-MuiOutlinedInput-root': {
-                  borderRadius: '24px',
-                  height: 35,
-                },
-                backgroundColor: '#fff',
-                borderRadius: '24px',
+                ...StyleTable.muiTableHeadCellFilterTextFieldProps,
               },
             }}
-            muiTablePaperProps={{
-              sx: {
-                boxShadow: 'none',
-              },
-            }}
-            muiTableContainerProps={{
-              sx: {
-                border: '1px solid #E6E6E6',
-                borderRadius: '8px',
-                '& .Mui-TableBodyCell-DetailPanel': {
-                  padding: 0,
-                  background: 'var(--detail-data-bg)',
-                },
-                '&::-webkit-scrollbar': {
-                  height: 10,
-                },
-                '& .Mui-ToolbarDropZone': {
-                  display: 'none',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                  marginTop: 2,
-                  background: '#AEAEAE',
-                },
-                // '&::-webkit-scrollbar-button': {
-                //   display: 'none',
-                // },
-              },
-            }}
-            muiTopToolbarProps={{
-              sx: {
-                position: 'unset',
-                '& .Mui-ToolbarDropZone': {
-                  display: 'none',
-                },
-                '& .css-sq9qdz': {
-                  position: 'unset',
-                },
-              },
-            }}
-            displayColumnDefOptions={{
-              'mrt-row-expand': {
-                enablePinning: true,
-                muiTableHeadCellProps: {
-                  style: {
-                    right: 0,
-                  },
-                },
-                muiTableBodyCellProps: {
-                  style: { right: 0 },
-                },
-              },
-              'mrt-row-actions': {
-                enablePinning: true,
-                muiTableHeadCellProps: {
-                  style: {
-                    right: 60,
-                  },
-                },
-                muiTableBodyCellProps: {
-                  style: { right: 60 },
-                },
-              },
-            }}
+            muiTablePaperProps={StyleTable.muiTablePaperProps}
+            muiTableContainerProps={StyleTable.muiTableContainerProps}
+            muiTopToolbarProps={StyleTable.muiTopToolbarProps}
+            displayColumnDefOptions={StyleTable.displayColumnDefOptions}
             initialState={{
               showToolbarDropZone: false,
               columnPinning: {
@@ -547,7 +431,7 @@ const FormExample = () => {
                     color="success"
                     variant="contained"
                     onClick={handleAddNewUser}>
-                    <AddIcon />
+                    <AddIcon sx={{ mb: '1.5px' }} />
                     <Typography ml={1} fontWeight={600}>
                       {t('btnAddNewuser')}
                     </Typography>
@@ -606,19 +490,7 @@ const FormExample = () => {
                 </Box>
               );
             }}
-            muiTableHeadCellProps={{
-              sx: {
-                backgroundColor: '#F2F2F2',
-                fontSize: 16,
-                height: '48px',
-                '& .Mui-TableHeadCell-Content-Actions': {
-                  opacity: 0,
-                },
-                '& .Mui-TableHeadCell-Content-Actions:hover': {
-                  opacity: 1,
-                },
-              },
-            }}
+            muiTableHeadCellProps={StyleTable.muiTableHeadCellProps}
             renderBottomToolbar={() => (
               <FooterTablePagination
                 page={page}
@@ -628,6 +500,11 @@ const FormExample = () => {
                 total={!!data && data.total ? data.total : 0}
               />
             )}
+            state={{
+              isLoading: isLoading,
+              showAlertBanner: isError,
+              showProgressBars: isFetching,
+            }}
           />
         </ThemeProvider>
       </Grid>

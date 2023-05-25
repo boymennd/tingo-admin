@@ -18,6 +18,7 @@
 	--secondary-color: rgba(0, 0, 0, 0.6);
 	--detail-data-bg: rgba(0, 0, 0, 0.02);
 	--boder-input-color: rgba(0, 0, 0, 0.1);
+	--bg-primary-color: #F2F2F2
 }
 
 * {
