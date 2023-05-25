@@ -31,6 +31,14 @@ export default function DatePickerDefault(props: DatePickerProps) {
             inputProps={{
               ...params.inputProps,
               placeholder: 'Pick Date',
+              startAdornment: (
+                <IconButton
+                  size="small"
+                  disabled={props.disabled}
+                  onClick={() => handleOnChange(null)}>
+                  <Close fontSize="small" />
+                </IconButton>
+              ),
             }}
           />
         )}
