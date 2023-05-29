@@ -227,11 +227,17 @@ export default function Layout({ children }: Props) {
     dispatch(openLoading(false));
   };
 
-  const SidebarItem = (item: string, path: string, icon: any) => {
+  const SidebarItem = (
+    item: string,
+    path: string,
+    icon: any,
+    index: number
+  ) => {
     const location = useLocation();
 
     return (
       <ListItemButton
+        key={index}
         sx={{
           minHeight: 48,
           height: 56,
@@ -387,8 +393,13 @@ export default function Layout({ children }: Props) {
           open={menuOpen}
           className={classes.MSideBarContainer}>
           <List sx={{ padding: '24px 0' }}>
-            {menuItems?.map((menuItem) =>
-              SidebarItem(t(menuItem.name), menuItem.route, menuItem.icon)
+            {menuItems?.map((menuItem, index) =>
+              SidebarItem(
+                t(menuItem.name),
+                menuItem.route,
+                menuItem.icon,
+                index
+              )
             )}
             {/* {SidebarItem(t('dashboard'), '/', <Dashboard />)}
 						{SidebarItem(t('profile'), '/profile', <Person />)}

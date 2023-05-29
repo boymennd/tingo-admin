@@ -199,13 +199,13 @@ const FormExample = () => {
         ),
         size: 200,
         filterSelectOptions: [
-          { text: 'Account setup', value: USER_STATUS.ACCOUNT_SETUP },
-          { text: 'Wait list', value: USER_STATUS.WAIT_LIST },
-          { text: 'incomplete', value: USER_STATUS.INCOMPLETE },
+          { text: 'Account Setup', value: USER_STATUS.ACCOUNT_SETUP },
+          { text: 'Incomplete', value: USER_STATUS.INCOMPLETE },
           { text: 'In review', value: USER_STATUS.IN_REVIEW },
           { text: 'Active', value: USER_STATUS.ACTIVE },
           { text: 'Suspended', value: USER_STATUS.SUSPENDED },
           { text: 'Closed', value: USER_STATUS.CLOSED },
+          { text: 'Lock Down', value: USER_STATUS.LOCKED },
         ],
         filterVariant: 'select',
         muiTableHeadCellFilterTextFieldProps: { placeholder: 'Select status' },
@@ -404,6 +404,11 @@ const FormExample = () => {
             muiTablePaperProps={StyleTable.muiTablePaperProps}
             muiTableContainerProps={StyleTable.muiTableContainerProps}
             muiTopToolbarProps={StyleTable.muiTopToolbarProps}
+            muiSelectAllCheckboxProps={{
+              sx: {
+                border: '2px solid rgba(0, 0, 0, 0.4)',
+              },
+            }}
             displayColumnDefOptions={StyleTable.displayColumnDefOptions}
             initialState={{
               showToolbarDropZone: false,

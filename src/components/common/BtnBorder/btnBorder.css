@@ -12,6 +12,16 @@
   background-image: linear-gradient(313.09deg, #f05822 0%, #fbb421 103.33%);
 }
 
+.btnBorder:hover {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+    0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.btnBorder:active {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0px 8px 10px 1px rgba(0, 0, 0, 0.14), 0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
 .btnInside {
   height: 38px;
   width: 100%;
@@ -19,6 +29,10 @@
   border-radius: 24px;
   background: #fff;
   color: transparent;
+}
+
+.btnInside:active {
+  background-color: rgb(247, 236, 233);
 }
 
 .btnContent {
