@@ -13,16 +13,16 @@ const UserStatus = ({ status }: Props) => {
 
   switch (status) {
     case USER_STATUS.ACCOUNT_SETUP:
-      statusLabel = 'Account setup';
+      statusLabel = 'Account Setup';
       styleCustom = {
-        color: 'var(--status-approve-color)',
-        backgroundColor: 'var(--status-approve-bg-color)',
+        color: 'var(--status-wait-color)',
+        backgroundColor: 'var(--status-wait-bg-color)',
         width: '140px',
       };
 
       break;
-    case USER_STATUS.WAIT_LIST:
-      statusLabel = 'Wait list';
+    case USER_STATUS.LOCKED:
+      statusLabel = 'Lock Down';
       styleCustom = {
         color: 'var(--status-reject-color)',
         backgroundColor: 'var(--status-reject-bg-color)',
@@ -33,8 +33,8 @@ const UserStatus = ({ status }: Props) => {
     case USER_STATUS.INCOMPLETE:
       statusLabel = 'Incomplete';
       styleCustom = {
-        color: 'var(--status-reject-color)',
-        backgroundColor: 'var(--status-reject-bg-color)',
+        color: 'var(--status-wait-color)',
+        backgroundColor: 'var(--status-wait-bg-color)',
         width: '120px',
       };
 
@@ -42,8 +42,8 @@ const UserStatus = ({ status }: Props) => {
     case USER_STATUS.IN_REVIEW:
       statusLabel = 'In review';
       styleCustom = {
-        color: 'var(--status-reject-color)',
-        backgroundColor: 'var(--status-reject-bg-color)',
+        color: 'var(--status-wait-color)',
+        backgroundColor: 'var(--status-wait-bg-color)',
         width: '120px',
       };
 
@@ -51,8 +51,8 @@ const UserStatus = ({ status }: Props) => {
     case USER_STATUS.ACTIVE:
       statusLabel = 'Active';
       styleCustom = {
-        color: 'var(--status-reject-color)',
-        backgroundColor: 'var(--status-reject-bg-color)',
+        color: 'var(--status-active-color)',
+        backgroundColor: 'var(--status-active-bg-color)',
         width: '120px',
       };
 

@@ -6,10 +6,12 @@
 	--tingo-color: #F8A700,
 	--tingo-bg-color: #fff5db;
 	--menu-selected-bg-color: rgba(247, 139, 41, 0.1);
-	--status-reject-color: #f05822;
-	--status-reject-bg-color: rgba(247, 139, 41, 0.1);
-	--status-approve-color: #2e7d32;
-	--status-approve-bg-color: #e8f5e9;
+	--status-wait-color: #856100;
+	--status-wait-bg-color:#FFF9DE;
+	--status-reject-color: #DB1F32;
+	--status-reject-bg-color: #FCF8F7;
+	--status-active-color: #177A19;
+	--status-active-bg-color: #F3FAF2;
 	--primary-border: 1px solid #d2d2d2;
 	--delete-color: #D80027;
 	--sidebar-width: 216px;
