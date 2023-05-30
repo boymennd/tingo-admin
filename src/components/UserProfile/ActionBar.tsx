@@ -5,12 +5,14 @@ import editIcon from '../../assets/images/edit.png';
 import { useTranslation } from 'react-i18next';
 import { useAppSelector } from '../../store/store';
 import BtnBorder from '../common/BtnBorder';
+import { processStatus } from './PersonalInformation';
 
 interface Props {
   setShowModal: (value: boolean) => void;
+  setProcess: (value: string) => void;
 }
 
-const ActionBar = ({ setShowModal }: Props) => {
+const ActionBar = ({ setShowModal, setProcess }: Props) => {
   const classes = userProfileStyles();
   const { t } = useTranslation(['userProfile']);
   const menuOpen = useAppSelector((state) => state.layout.menuOpen);
@@ -27,7 +29,13 @@ const ActionBar = ({ setShowModal }: Props) => {
         <div className={classes.delete} onClick={() => setShowModal(true)}>
           <img src={deleteIcon} alt="Delete" /> {t('delete')}
         </div>
-        <BtnBorder image={editIcon} text={t('edit')} />
+        <BtnBorder
+          image={editIcon}
+          text={t('edit')}
+          callback={() => {
+            setProcess(processStatus.EDIT);
+          }}
+        />
       </div>
       <div className={classes.groupAction}>
         <div className={classes.unapprove}>{t('unapprove')}</div>

@@ -156,6 +156,37 @@ const userProfileStyles = makeStyles({
     background: 'var(--bg-gradient-color)',
     cursor: 'pointer',
   },
+  documentIdenficationItem: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 0
+  },
+  documentIdenficationImage: {
+    width: '300px',
+    height: '270px',
+    borderRadius: '16px',
+  },
+  editItem: {
+    marginTop: '12px'
+  },
+  selectStatus: {
+    padding: '4px 12px',
+    borderRadius: '24px',
+    width: '190px',
+    height: '40px',
+  },
+  editTittle: {
+    textAlign: 'end',
+    display: 'flex',
+    justifyContent: 'end',
+    alignItems: 'center',
+    height: '100%'
+  },
+  customInputProfile: {
+    border: '1px solid rgba(0, 0, 0, 0.2)',
+    borderRadius: '8px',
+  },
 });
 
 export { userProfileStyles };
